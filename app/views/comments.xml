@@ -1,0 +1,30 @@
+<Alloy>
+    <Window zIndex="20">
+        <View id="background"/>
+        <View class="menu">
+            <Button id="btn_close"></Button>
+            <Button id="btn_like"></Button>
+            <!--<Button id="btn_delete">Delete</Button>-->
+        </View>
+        <!-- posting -->
+        <View id="view_post">
+            <ImageView id="img_post_icon" class="img_author"></ImageView>
+            <Label id="lbl_post_author" class="txt_author"/>
+            <Label id="lbl_post_text" class="lbl_text"/>
+
+            <!---footer
+            <View class="view_interaction">
+                <ImageView class="bubble"></ImageView>
+                <Label bindId="comments" class="comments" id="lbl_comments"/>
+                <ImageView class="heart"></ImageView>
+                <Label bindId="likes" class="likes" id="lbl_likes"/>
+            </View>-->
+        </View>
+        <!-- comments -->
+        <View id="content"></View>
+        <View id="view_linie"></View>
+        <TextArea id="txt_comment"></TextArea>
+        <Button id="btn_post" titleid="post"></Button>
+        <ActivityIndicator id="waiting"></ActivityIndicator>
+    </Window>
+</Alloy>

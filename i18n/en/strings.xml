@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="getStream">fetching data</string>
+    <string name="getAspects">fetching aspects</string>
+    <string name="show">show</string>
+    <string name="posting">posting</string>
+    <string name="login">Login</string>
+    <string name="noToken">couldn't get token - try again</string>
+    <string name="getToken">fetch token</string>
+    <string name="setUsername">username has to be name@pod.com</string>
+    <string name="fieldEmpty">Username or password empty</string>
+    <string name="loginTitle">Connect to your pod:</string>
+    <string name="post">Post</string>
+    <string name="photo">Photo</string>
+    <string name="getComments">fetching comments</string>
+    <string name="somethingNew">new things</string>
+    <string name="error">error</string>
+    <string name="more">more</string>
+    <string name="register">Create Account</string>
+    <string name="txt_stream">Stream</string>
+    <string name="txt_activity">My activities</string>
+    <string name="txt_mentions">Mentions</string>
+    <string name="txt_followedtags">Followed tags</string>
+    <string name="txt_invite">Invite a friend</string>
+    <string name="txt_invite_email">Hello, please accept my invite: </string>
+    <string name="txt_settings">Settings</string>
+</resources>

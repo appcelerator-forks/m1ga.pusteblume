@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="getStream">Daten werden abgerufen</string>
+    <string name="getAspects">Aspekte werden abgerufen</string>
+    <string name="show">zeige</string>
+    <string name="posting">senden</string>
+    <string name="login">Einloggen</string>
+    <string name="noToken">Token konnte nicht abgerufen werden - bitte nochmal versuchen</string>
+    <string name="getToken">Token wird abgerufen</string>
+    <string name="setUsername">Benutzername muss so aussehen: name@pod.com</string>
+    <string name="fieldEmpty">Benutzername oder Password leer</string>
+    <string name="loginTitle">Logge dich ein:</string>
+    <string name="post">Sende</string>
+    <string name="photo">Foto</string>
+    <string name="getComments">Kommentare werden abgerufen</string>
+    <string name="somethingNew">Neuigkeiten</string>
+    <string name="error">Fehler</string>
+    <string name="more">mehr</string>
+    <string name="register">Account erstellen</string>
+    <string name="txt_stream">Stream</string>
+    <string name="txt_activity">Meine Aktivitäten</string>
+    <string name="txt_mentions">Erwähnungen</string>
+    <string name="txt_followedtags">gefolgte Tags</string>
+    <string name="txt_invite">jemanden einladen</string>
+    <string name="txt_invite_email">Hallo, hier meine Einladung: </string>
+    <string name="txt_settings">Einstellungen</string>
+</resources>

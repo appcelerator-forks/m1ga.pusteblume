@@ -1,0 +1,14 @@
+<Alloy>
+    <Window zIndex="120">
+        <View id="view_register">
+            <TextField id="server" hintText="Server URL"></TextField>
+            <Label id="morepods">Find more pods at: http://podupti.me/</Label>
+            <TextField id="username" hintText="Username"></TextField>
+            <TextField id="email" hintText="Email"></TextField>
+            <TextField id="password" hintText="Password"></TextField>
+            <TextField id="password_repeat" hintText="Password"></TextField>
+            <Button id="btn_create" titleid="register"></Button>
+        </View>
+        <ActivityIndicator id="waiting"></ActivityIndicator>
+    </Window>
+</Alloy>

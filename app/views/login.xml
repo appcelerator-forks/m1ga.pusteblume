@@ -1,0 +1,13 @@
+<Alloy>
+    <Window zIndex="100">
+        <View id="view_login">
+            <Label id="lbl_login" textid="loginTitle"></Label>
+            <TextField id="username" hintText="Username@pod"></TextField>
+            <TextField id="password" hintText="Password"></TextField>
+            <Button id="btn_login" titleid="login"></Button>
+            <!--<Button id="btn_register" titleid="register"></Button>-->
+            
+        </View>
+        <ActivityIndicator id="waiting"></ActivityIndicator>
+    </Window>
+</Alloy>
