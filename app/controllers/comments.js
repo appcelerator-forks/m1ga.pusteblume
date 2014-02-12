@@ -15,7 +15,7 @@ $.img_post_icon.image = args.data.icon;
 $.lbl_post_author.text = args.data.author;
 //$.lbl_comments.text = args.data.comment_count;
 //$.lbl_likes.text = args.data.like_count;
-$.btn_like.backgroundImage = (args.data.myFav) ? "/images/heart_full.png" : "/images/heart_empty.png";
+$.btn_like.title = (args.data.myFav) ? "" : "";
 $.btn_like.liked = args.data.myFav;
 
 function getStream() {
@@ -70,11 +70,11 @@ function onPostLike(e) {
     if (!$.btn_like.liked) {
         favID = e.id;
         //$.lbl_likes.text = (parseInt($.lbl_likes.text) + 1);
-        $.btn_like.backgroundImage = "/images/heart_full.png";
+        $.btn_like.title = "";
         $.btn_like.liked = true;
     } else {
         //$.lbl_likes.text = (parseInt($.lbl_likes.text) - 1);
-        $.btn_like.backgroundImage = "/images/heart_empty.png";
+        $.btn_like.title = "";
         $.btn_like.liked = false;
     }
 }
@@ -129,9 +129,23 @@ function onFocus(e) {
 
 getStream();
 
+function onTouchStart(e) {
+    e.source.color = "#fff";
+}
+
+function onTouchEnd(e) {
+    e.source.color = "#bbb";
+}
+
 // events
 
 $.btn_close.addEventListener("click", onClickClose);
 $.btn_post.addEventListener("click", onClickPost);
 $.btn_like.addEventListener("click", onClickLike);
 $.comments.addEventListener("focus", onFocus);
+
+$.btn_like.addEventListener("touchstart", onTouchStart);
+$.btn_like.addEventListener("touchend", onTouchEnd);
+
+$.btn_close.addEventListener("touchstart", onTouchStart);
+$.btn_close.addEventListener("touchend", onTouchEnd);

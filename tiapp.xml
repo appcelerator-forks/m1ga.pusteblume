@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.miga.pusteblume</id>
     <name>Pusteblume</name>
-    <version>1.13</version>
+    <version>1.18</version>
     <publisher>Michael Gangolf</publisher>
     <url>http://www.migaweb.de</url>
     <description>Diaspora client for Android</description>
@@ -34,8 +34,8 @@
             <service type="interval" url="service_fetch.js"/>
         </services>
         <manifest android:installLocation="auto"
-            android:versionCode="14" android:versionName="1.13">
-            <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="17"/>
+            android:versionCode="19" android:versionName="1.18">
+            <uses-sdk android:targetSdkVersion="17"/>
         </manifest>
     </android>
     <mobileweb>
@@ -57,7 +57,7 @@
         <target device="mobileweb">false</target>
         <target device="tizen">false</target>
     </deployment-targets>
-    <sdk-version>3.1.3.GA</sdk-version>
+    <sdk-version>3.2.1.GA</sdk-version>
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>

@@ -1,9 +1,11 @@
-Ti.API.info(Ti.App.Properties.getString("cookie_session") + " l:" + Ti.App.Properties.getString("loggedIn"));
 var blob = null;
 var service = null;
 var data = [];
 var aspects = null;
 var userinfo = null;
+var newPosts = 0;
+var lastID = 0;
+var isOut = false;
 
 var content = Alloy.createWidget("list", "widget", {
     getStream : getStream, click : true, showImage : showImage
@@ -20,6 +22,12 @@ if (!Ti.App.Properties.hasProperty("invitelink")) {
 
 if (!Ti.App.Properties.hasProperty("lastNotification")) {
     Ti.App.Properties.setString("lastNotification", "0");
+}
+
+if (!Ti.App.Properties.hasProperty("lastPost")) {
+    Ti.App.Properties.setString("lastPost", "0");
+} else {
+    lastID = Ti.App.Properties.getString("lastPost");
 }
 
 if (!Ti.App.Properties.hasProperty("stream") || Ti.App.Properties.getString("stream") == "") {
@@ -90,7 +98,7 @@ Ti.App.addEventListener('checkNotifications', function(data) {
 function getStream() {
     // get stream
     //
-    $.waiting.message = L("getStream");
+    $.waiting.message = " " + L("getStream");
     $.waiting.show();
 
     require("/api").createAPI({
@@ -111,6 +119,9 @@ function onClickAspects(e) {
 
 function onStream(e) {
     data = [];
+    newPosts = 0;
+    var lid = Ti.App.Properties.getString("lastPost");
+
     for (var i = 0; i < e.length; ++i) {
 
         var txt = String(e[i].text).replace(/<(?:.|\n)*?>/gm, '');
@@ -137,8 +148,20 @@ function onStream(e) {
         favID = null;
         photo = null;
         photoBig = null;
+        if (lastID < e[i].id) {
+            newPosts++;
+            if (lid < e[i].id)
+                lid = e[i].id;
+        }
     }
 
+    if (newPosts > 0) {
+        showNotification(newPosts);
+        newPostss = 0;
+    }
+    lastID = lid;
+    Ti.App.Properties.setString("lastPost", lastID);
+    lid = null;
     content.setData(data);
     $.waiting.hide();
 }
@@ -176,12 +199,14 @@ function onClickStreamOption(e) {
 function onClickStream(e) {
 
     var ani = Ti.UI.createAnimation();
-    if ($.view_menu_stream.left > -200) {
+    if (isOut) {
         // hide menu
         ani.left = -200;
+        isOut = false;
     } else {
         // show menu
         ani.left = 0;
+        isOut = true;
     }
     ani.duration = 200;
     $.view_menu_stream.animate(ani);
@@ -219,8 +244,6 @@ function onClickLogout(e) {
     // logout
     $.waiting.show();
 
-    deleteService();
-
     require("/api").createAPI({
         type : "POST", url : "/users/sign_out", success : onLogout, error : onLogoutError, parameter : {
             "_method" : "delete", "authenticity_token" : Ti.App.Properties.getString("token")
@@ -234,7 +257,7 @@ function onNotification(e) {
     var lastSaved = new Date(Ti.App.Properties.getString("lastNotification"));
     var last = 0;
 
-    Ti.API.info("last: " + lastSaved);
+    //Ti.API.info("last: " + lastSaved);
     for ( i = 0; i < e.length; ++i) {
         for (var obj in e[i]) {
             // check for unread stuff
@@ -254,26 +277,29 @@ function onNotification(e) {
     if (last == 0) {
         last = lastSaved;
     }
-    Ti.API.info("save: " + last);
     Ti.App.Properties.setString("lastNotification", last);
 
     if (count > 0) {
-        // create notification
-        var intent = Ti.Android.createIntent({
-            flags : Ti.Android.FLAG_ACTIVITY_CLEAR_TOP | Ti.Android.FLAG_ACTIVITY_NEW_TASK, className : 'com.miga.pusteblume.PusteblumeActivity'
-        });
-        intent.addCategory(Ti.Android.CATEGORY_LAUNCHER);
-
-        var pending = Ti.Android.createPendingIntent({
-            intent : intent, flags : Ti.Android.FLAG_UPDATE_CURRENT
-        });
-
-        var notification = Ti.Android.createNotification({
-            icon : Ti.App.Android.R.drawable.appicon, contentTitle : 'Pusteplume', contentText : count + " " + L("somethingNew"), contentIntent : pending, defaults : Titanium.Android.DEFAULT_ALL, flags : Titanium.Android.ACTION_DEFAULT | Titanium.Android.FLAG_AUTO_CANCEL | Titanium.Android.FLAG_SHOW_LIGHTS
-        });
-        // Send the notification.
-        Ti.Android.NotificationManager.notify(1, notification);
+        showNotification(count);
     }
+}
+
+function showNotification(count) {
+    // create notification
+    var intent = Ti.Android.createIntent({
+        flags : Ti.Android.FLAG_ACTIVITY_CLEAR_TOP | Ti.Android.FLAG_ACTIVITY_NEW_TASK, className : 'com.miga.pusteblume.PusteblumeActivity'
+    });
+    intent.addCategory(Ti.Android.CATEGORY_LAUNCHER);
+
+    var pending = Ti.Android.createPendingIntent({
+        intent : intent, flags : Ti.Android.FLAG_UPDATE_CURRENT
+    });
+
+    var notification = Ti.Android.createNotification({
+        icon : Ti.App.Android.R.drawable.appicon, contentTitle : 'Pusteplume', contentText : count + " " + L("somethingNew"), contentIntent : pending, defaults : Titanium.Android.DEFAULT_ALL, flags : Titanium.Android.ACTION_DEFAULT | Titanium.Android.FLAG_AUTO_CANCEL | Titanium.Android.FLAG_SHOW_LIGHTS
+    });
+    // Send the notification.
+    Ti.Android.NotificationManager.notify(1, notification);
 }
 
 function onNotificationError(e) {
@@ -282,7 +308,7 @@ function onNotificationError(e) {
 
 function checkNotification(e) {
     // check if there is something new
-    Ti.API.info("check notifications");
+    //Ti.API.info("check notifications");
     require("/api").createAPI({
         type : "GET", url : "/notifications", success : onNotification, error : onNotificationError, parameter : {
         }
@@ -324,7 +350,7 @@ function onSubmitPhotoError(e) {
 function onClickSubmit(e) {
     // post message
     //
-    $.waiting.message = L("posting") + "...";
+    $.waiting.message = " " + L("posting") + "...";
     $.waiting.show();
     $.text.blur();
     if (blob != null) {
@@ -336,10 +362,10 @@ function onClickSubmit(e) {
     } else {
 
         match = /\n/ig;
-        Ti.API.info($.text.value);
+        //Ti.API.info($.text.value);
         txt = String($.text.value).replace(match, "\\r\\n");
 
-        Ti.API.info(txt);
+        //Ti.API.info(txt);
         if (e.photoID == null) {
             require("/api").createAPI({
                 type : "POST", postJSON : true, token : true, url : "/status_messages", success : onSubmit, error : onSubmitError, parameter : {
@@ -488,10 +514,17 @@ function onClickInvite(e) {
     // https://joindiaspora.com/users/invitations
 }
 
-function onClickSettings(e){
+function onClickSettings(e) {
     Alloy.createController("settings");
 }
 
+function onTouchStart(e) {
+    e.source.color = "#fff";
+}
+
+function onTouchEnd(e) {
+    e.source.color = "#bbb";
+}
 
 // events
 //
@@ -510,4 +543,12 @@ $.btn_refresh.addEventListener("click", onRefresh);
 $.img_big.addEventListener("click", onClickImage);
 $.btn_close.addEventListener("click", onClickImage);
 $.lbl_invite.addEventListener("click", onClickInvite);
-$.btn_settings.addEventListener("click",onClickSettings);
+$.btn_settings.addEventListener("click", onClickSettings);
+
+$.btn_logout.addEventListener("touchstart", onTouchStart);
+$.btn_write.addEventListener("touchstart", onTouchStart);
+$.btn_refresh.addEventListener("touchstart", onTouchStart);
+
+$.btn_logout.addEventListener("touchend", onTouchEnd);
+$.btn_write.addEventListener("touchend", onTouchEnd);
+$.btn_refresh.addEventListener("touchend", onTouchEnd);

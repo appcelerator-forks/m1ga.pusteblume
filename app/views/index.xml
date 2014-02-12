@@ -8,9 +8,9 @@
                 <View id="view_square3"/>
                 <Label id="lbl_stream">Stream</Label>
             </View>
-            <Button id="btn_write"></Button>
-            <Button id="btn_refresh"></Button>
-            <Button id="btn_logout"></Button>
+            <Button id="btn_write"></Button>
+            <Button id="btn_refresh"></Button>
+            <Button id="btn_logout"></Button>
         </View>
         <View id="content"></View>
         <View id="view_post">

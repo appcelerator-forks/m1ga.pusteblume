@@ -2,12 +2,6 @@
 	exitOnClose: false,
 	navBarHidden: true
 }
-"#btn_close":{
-	backgroundImage: "/images/left.png",
-	width: 27,
-	height: 27,
-	left: 14
-}
 
 "#view_settings":{
 	top:40,layout:"vertical",bottom:0,left:0,right:0

@@ -13,6 +13,8 @@ tmp
 .idea/
 build/
 build.log
+.settings
+.settings/
 .settings/com.aptana.editor.common.prefs
 .settings/com.appcelerator.titanium.mobile.prefs
 .settings/com.appcelerator.titanium.core.prefs

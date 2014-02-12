@@ -16,7 +16,7 @@ function onClickLink(e) {
         }
     } else {
         // click the textfield but not a link
-        Ti.API.info("show comments");
+        //Ti.API.info("show comments");
         onClickItem({
             source : {
                 name : "", row : {
@@ -33,7 +33,7 @@ $.setData = function(d) {
 
     for (var i = 0; i < data.length; ++i) {
         var row = Ti.UI.createTableViewRow({
-            height : Ti.UI.SIZE, className : "normal"
+            height : Ti.UI.SIZE
         });
 
         var img = $.UI.create('ImageView', {
@@ -48,21 +48,21 @@ $.setData = function(d) {
             height : Ti.UI.SIZE, left : 0, right : 0, top : 34, layout : "vertical"
         });
 
-        var StyledLabel = require('ti.styledlabel');
-        
-         var lbl_text = $.UI.create('Label', {
-         classes : ["lbl_text"], html : Alloy.Globals.replaceText(data[i].text), top : 0
-         });
-         
-/*
-        var lbl_text = StyledLabel.createLabel({
-            html : Alloy.Globals.replaceText(data[i].text), name : "text", color : '#ffffff', left : 75, right : 14, textAlign : "left", bottom : 15, height : Ti.UI.SIZE, verticalAlign : Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP, font : {
-                fontSize : 12, fontFamily : "DejaVuSansCondensed"
-            }, rowID : i
+        //var StyledLabel = require('ti.styledlabel');
+
+        var lbl_text = $.UI.create('Label', {
+            classes : ["lbl_text"], html : Alloy.Globals.replaceText(data[i].text), top : 0, height : Ti.UI.SIZE
         });
-        
-        lbl_text.addEventListener('click', onClickLink);
-*/
+
+        /*
+         var lbl_text = StyledLabel.createLabel({
+         html : Alloy.Globals.replaceText(data[i].text), name : "text", color : '#ffffff', left : 75, right : 14, textAlign : "left", bottom : 15, height : Ti.UI.SIZE, verticalAlign : Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP, font : {
+         fontSize : 12, fontFamily : "DejaVuSansCondensed"
+         }, rowID : i
+         });
+
+         lbl_text.addEventListener('click', onClickLink);
+         */
         var img_post = null;
         if (data[i].photo != null && data[i].photo != "") {
             img_post = Ti.UI.createImageView({
@@ -80,33 +80,39 @@ $.setData = function(d) {
             img_post.addEventListener("click", onClickImage);
         }
 
-        var pubimg = "/images/public.png";
+        var pubimg = "";
         var pubtxt = "public";
         if (!data[i].isPublic) {
-            pubimg = "/images/locked.png";
+            pubimg = "";
             pubtxt = "private";
         }
 
-        var img_public = Ti.UI.createImageView({
-            image : pubimg, left : 13, width : 10, height : 10, top : 70
+        var img_public = Ti.UI.createLabel({
+            text : pubimg, left : 6, width : 10, height : 10, top : 70, font : {
+                fontFamily : "FontAwesome", fontSize : 10
+            }
         });
         var lbl_public = $.UI.create('Label', {
-            classes : ["txt_small"], text : pubtxt, top : img_public.top - 4, left : 30, width : 35, textAlign : "left"
+            classes : ["txt_small"], text : pubtxt, top : img_public.top - 4, left : 20, width : 35, textAlign : "left"
         });
 
         pubimg = null;
         pubtxt = null;
 
-        var img_likes = Ti.UI.createImageView({
-            image : "/images/heart.png", left : img_public.left, width : 12, height : 10, top : img_public.top + 20
+        var img_likes = Ti.UI.createLabel({
+            text : "", left : img_public.left, width : 12, height : 10, top : img_public.top + 20, font : {
+                fontFamily : "FontAwesome", fontSize : 10
+            }
         });
 
         var lbl_likes = $.UI.create('Label', {
             classes : ["txt_small"], text : data[i].like_count, top : img_likes.top - 4, left : lbl_public.left, width : 20, textAlign : "left"
         });
 
-        var img_comments = Ti.UI.createImageView({
-            image : "/images/bubble.png", width : 10, height : 10, top : img_likes.top + 20, left : img_public.left
+        var img_comments = Ti.UI.createLabel({
+            text : "", width : 10, height : 10, top : img_likes.top + 20, left : img_public.left, font : {
+                fontFamily : "FontAwesome", fontSize : 10
+            }
         });
 
         var lbl_comments = $.UI.create('Label', {
@@ -120,6 +126,8 @@ $.setData = function(d) {
         view_content.add(lbl_text);
         if (img_post != null)
             view_content.add(img_post);
+
+
 
         row.add(img);
         row.add(lbl_author);

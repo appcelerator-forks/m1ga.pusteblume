@@ -34,19 +34,44 @@ function deleteService() {
 function onClickServiceStart(e) {
     Ti.API.info("register");
     registerService();
+    $.lbl_service.text = L("stopservice");
+    $.lbl_service.removeEventListener("click", onClickServiceStart);
+    $.lbl_service.addEventListener("click", onClickServiceStop);
 }
 
 function onClickServiceStop(e) {
     Ti.API.info("remove");
     deleteService();
+    $.lbl_service.text = L("startservice");
+    $.lbl_service.addEventListener("click", onClickServiceStart);
+    $.lbl_service.removeEventListener("click", onClickServiceStop);
 }
 
 function onClickClose(e) {
     $.settings.close();
 }
 
-$.lbl_service_start.addEventListener("click", onClickServiceStart);
-$.lbl_service_stop.addEventListener("click", onClickServiceStop);
+if (Ti.Android.isServiceRunning(Ti.Android.createServiceIntent({
+    url : "service_fetch.js"
+}))) {
+    $.lbl_service.text = L("stopservice");
+    $.lbl_service.addEventListener("click", onClickServiceStop);
+} else {
+    $.lbl_service.text = L("startservice");
+    $.lbl_service.addEventListener("click", onClickServiceStart);
+}
+
+function onTouchStart(e) {
+    e.source.color = "#fff";
+}
+
+function onTouchEnd(e) {
+    e.source.color = "#bbb";
+}
+
 $.btn_close.addEventListener("click", onClickClose);
+
+$.btn_close.addEventListener("touchstart", onTouchStart);
+$.btn_close.addEventListener("touchend", onTouchEnd);
 
 $.settings.open();

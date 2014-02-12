@@ -6,7 +6,8 @@
 
 "#username":{
 	left: 0,
-	right: 0
+	right: 0,
+	keyboardType:Ti.UI.KEYBOARD_EMAIL
 }
 
 "#password":{

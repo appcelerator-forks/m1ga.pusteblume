@@ -24,4 +24,6 @@
     <string name="txt_invite">jemanden einladen</string>
     <string name="txt_invite_email">Hallo, hier meine Einladung: </string>
     <string name="txt_settings">Einstellungen</string>
+    <string name="stopservice">Service stoppen</string>
+    <string name="startservice">Service starten</string>
 </resources>

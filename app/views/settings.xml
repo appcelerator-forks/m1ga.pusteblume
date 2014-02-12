@@ -2,13 +2,12 @@
 	<Window zIndex="15">
 		<View id="background"/>
 		<View class="menu">
-			<Button id="btn_close"></Button>
+			<Button id="btn_close" class="btn_close"></Button>
 		</View>
 		<View id="view_settings">
 			<Label id="lbl_service_start" class="lbl_button" >Minutes:</Label>
 			<TextField id="tf_interval" hintText="Minutes" value="10"></TextField>
-			<Label id="lbl_service_start" class="lbl_button" >start service</Label>
-			<Label id="lbl_service_stop"  class="lbl_button" >stop service</Label>
+			<Label id="lbl_service" class="lbl_button" >start service</Label>
 		</View>
 	</Window>
 </Alloy>

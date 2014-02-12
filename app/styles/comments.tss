@@ -1,74 +1,71 @@
 "#comments":{
-	exitOnClose: false,
-	navBarHidden: true
+exitOnClose: false,
+navBarHidden: true
 }
 
-"#btn_close":{
-	backgroundImage: "/images/left.png",
-	width: 27,
-	height: 27,
-	left: 14
-}
 
 "#btn_like":{
-	backgroundImage: "/images/heart_empty.png",
-	width: 27,
-	height: 27,
-	right: 14
+font:{
+fontSize:25,
+fontFamily:"FontAwesome"
+},
+width: 40,
+height: 40,
+right: 10,color:"#bbb"
 }
 
 "#content":{
-	bottom: 80,
-	left: 0,
-	right: 0,
-	top: 120
+bottom: 80,
+left: 0,
+right: 0,
+top: 120
 }
 
 "#view_post":{
-	top: 40,
-	height: 80,
-	backgroundColor:"#222"
+top: 40,
+height: 80,
+backgroundColor:"#222"
 }
 "#view_item_header":{
-	top: 0,
-	left: 50,
-	right: 0,
-	backgroundColor: "transparent",
-	height: 15
+top: 0,
+left: 50,
+right: 0,
+backgroundColor: "transparent",
+height: 15
 }
 
 "#txt_comment":{
-	bottom: 0,
-	height: 80,
-	right: 100,
-	left: 0,
-	visible:false
+bottom: 0,
+height: 80,
+right: 100,
+left: 0,
+visible:false
 }
 
 
 "#btn_post":{
-	right: 0,
-	width: 100,
-	bottom: 0,
-	height: 80,
-	font:{
-		fontSize: 12
-	}
+right: 0,
+width: 100,
+bottom: 0,
+height: 80,
+font:{
+fontSize: 12
+}
 }
 
 "#view_post_header":{
-	top: 0,
-	left: 50,
-	right: 0,
-	backgroundColor: "transparent",
-	height: 15
+top: 0,
+left: 50,
+right: 0,
+backgroundColor: "transparent",
+height: 15
 }
 
 
 "#view_linie":{
-	bottom: 80,
-	height: 1,
-	left: 0,
-	right: 0,
-	backgroundColor: "#333"
+bottom: 80,
+height: 1,
+left: 0,
+right: 0,
+backgroundColor: "#333"
 }

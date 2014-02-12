@@ -59,24 +59,31 @@ left:100,right:0
 }
 
 "#btn_logout":{
-backgroundImage: "/images/logout.png",
-width: 27,
-height: 27,
-right: 10
+font:{
+		fontSize:25,
+		fontFamily:"FontAwesome"
+},width:40,
+height: 40,
+right: 10,color:"#bbb"
 }
 
 "#btn_write":{
-backgroundImage: "/images/pen.png",
-width: 27,
-height: 27,
-right: 110
+font:{
+		fontSize:25,
+		fontFamily:"FontAwesome"
+},width: 40,
+height: 40,
+right: 110,color:"#bbb"
 }
 
 "#btn_refresh":{
-backgroundImage: "/images/refresh.png",
-width: 27,
-height: 27,
-right: 60
+font:{
+		fontSize:25,
+		fontFamily:"FontAwesome"
+},
+width: 40,
+height: 40,
+right: 60,color:"#bbb"
 }
 
 

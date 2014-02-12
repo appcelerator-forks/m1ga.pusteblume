@@ -18,6 +18,10 @@ fontFamily : "DejaVuSansCondensed"
 }
 }
 
+"Button":{
+	backgroundColor:"transparent"
+}
+
 "#background":{
 width:Ti.UI.FILL,
 height:Ti.UI.FILL,
@@ -39,7 +43,7 @@ fontSize: 14,fontFamily : "DejaVuSansCondensed"
 
 
 ".lbl_text":{
-color : '#fff', left:75,right : 14, textAlign : "left", bottom : 15, height : Ti.UI.SIZE, verticalAlign : Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP, font : {
+color : '#fff', left:75,right : 14, textAlign : Ti.UI.TEXT_ALIGNMENT_LEFT, bottom : 15, height : Ti.UI.SIZE, verticalAlign : Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP, font : {
 fontSize : 12, fontFamily : "DejaVuSansCondensed"
 }, top:34,touchEnabled : true, name : "text"
 }
@@ -129,4 +133,14 @@ bottom: 0,
 width: Ti.UI.FILL,
 height: 1,
 backgroundColor: "transparent"
+}
+
+".btn_close":{
+font:{
+fontSize:25,
+fontFamily:"FontAwesome"
+},
+width: 40,
+height: 40,
+left: 5,color:"#bbb"
 }

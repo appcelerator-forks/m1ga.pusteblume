@@ -24,4 +24,6 @@
     <string name="txt_invite">Invite a friend</string>
     <string name="txt_invite_email">Hello, please accept my invite: </string>
     <string name="txt_settings">Settings</string>
+    <string name="stopservice">Stop service</string>
+    <string name="startservice">Start service</string>
 </resources>
