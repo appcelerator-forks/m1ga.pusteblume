@@ -296,7 +296,7 @@ function showNotification(count) {
     });
 
     var notification = Ti.Android.createNotification({
-        icon : Ti.App.Android.R.drawable.appicon, contentTitle : 'Pusteplume', contentText : count + " " + L("somethingNew"), contentIntent : pending, defaults : Titanium.Android.DEFAULT_ALL, flags : Titanium.Android.ACTION_DEFAULT | Titanium.Android.FLAG_AUTO_CANCEL | Titanium.Android.FLAG_SHOW_LIGHTS
+        icon : Ti.App.Android.R.drawable.appicon, contentTitle : 'Pusteblume', contentText : count + " " + L("somethingNew"), contentIntent : pending, defaults : Titanium.Android.DEFAULT_ALL, flags : Titanium.Android.ACTION_DEFAULT | Titanium.Android.FLAG_AUTO_CANCEL | Titanium.Android.FLAG_SHOW_LIGHTS
     });
     // Send the notification.
     Ti.Android.NotificationManager.notify(1, notification);
