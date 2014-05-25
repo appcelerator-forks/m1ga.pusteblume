@@ -107,14 +107,14 @@ function getStream() {
 }
 
 function onClickOptionAspects(e) {
-    $.view_aspects.visible = false;
+    $.view_aspects.hide();
     Ti.App.Properties.setString("aspectID", e.source.id);
     Ti.App.Properties.setString("aspect", e.source.title);
     $.btn_aspect.title = e.source.title;
 }
 
 function onClickAspects(e) {
-    $.view_aspects.visible = true;
+    $.view_aspects.show();
 }
 
 function onStream(e) {
@@ -329,7 +329,7 @@ function onSubmitError(e) {
 }
 
 function onClickCancel(e) {
-    $.view_post.visible = false;
+    $.view_post.hide();
 }
 
 function onSubmitPhoto(e) {
@@ -417,10 +417,10 @@ function onClickPhoto(e) {
 function onClickWrite(e) {
     if ($.content.bottom <= 10) {
         $.content.bottom = 120;
-        $.view_post.visible = true;
+        $.view_post.show();
     } else {
         $.content.bottom = 0;
-        $.view_post.visible = false;
+        $.view_post.hide();
     }
 
 }
@@ -432,12 +432,12 @@ function onRefresh(e) {
 }
 
 function showImage(url) {
-    $.view_photo.visible = true;
+    $.view_photo.show();
     $.img_big.image = url;
 }
 
 function onClickImage(e) {
-    $.view_photo.visible = false;
+    $.view_photo.hide();
     $.img_big.url = null;
 }
 

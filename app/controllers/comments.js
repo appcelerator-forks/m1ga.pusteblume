@@ -124,7 +124,7 @@ function onPostDeleteError(e) {
 }
 
 function onFocus(e) {
-    $.txt_comment.visible = true;
+    $.txt_comments.show();
 }
 
 getStream();

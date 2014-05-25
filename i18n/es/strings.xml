@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+<string name="getStream">descargando datos</string>
+<string name="getAspects">descargando aspectos</string>
+<string name="show">mostrar</string>
+<string name="posting">publicar</string>
+<string name="login">Login</string>
+<string name="noToken">no se puede obtener token - intente nuevamente</string>
+<string name="getToken">obteniendo token</string>
+<string name="setUsername">el usuario debe ser nombre@pod.com</string>
+<string name="fieldEmpty">Usuario o clave vacía</string>
+<string name="loginTitle">Conectando a su pod:</string>
+<string name="post">Publicar</string>
+<string name="photo">Foto</string>
+<string name="getComments">obteniendo comentarios</string>
+<string name="somethingNew">nuevo</string>
+<string name="error">error</string>
+<string name="more">más</string>
+<string name="register">Crear Cuenta</string>
+<string name="txt_stream">Inicio</string>
+<string name="txt_activity">Mi Actividad</string>
+<string name="txt_mentions">Menciones</string>
+<string name="txt_followedtags">Etiquetas que sigo</string>
+<string name="txt_invite">Invitar un amigo</string>
+<string name="txt_invite_email">Hola, por favor, acepta mi invitación:</string>
+<string name="txt_settings">Configuración</string>
+<string name="stopservice">Detener servicio</string>
+<string name="startservice">Iniciar servicio</string>
+</resources>
