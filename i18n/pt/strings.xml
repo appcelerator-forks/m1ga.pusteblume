@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="getStream">Baixando dados</string>
+    <string name="getAspects">baixando aspectos</string>
+    <string name="show">mostrar</string>
+    <string name="posting">postar</string>
+    <string name="login">Entrar</string>
+    <string name="noToken">não consegui pegar o token - tente novamente</string>
+    <string name="getToken">pegar token</string>
+    <string name="setUsername">usuário tem que ser nome@servidor.com</string>
+    <string name="fieldEmpty">Usuário ou senha em branco</string>
+    <string name="loginTitle">Conecte-se ao seu pod:</string>
+    <string name="post">Postar</string>
+    <string name="photo">Foto</string>
+    <string name="getComments">pegando comentários</string>
+    <string name="somethingNew">novas coisas</string>
+    <string name="error">erro</string>
+    <string name="more">mais</string>
+    <string name="register">Criar Conta</string>
+    <string name="txt_stream">Fluxo</string>
+    <string name="txt_activity">Minhas atividades</string>
+    <string name="txt_mentions">Menções</string>
+    <string name="txt_followedtags">Seguindo tags</string>
+    <string name="txt_invite">Convide um amigo</string>
+    <string name="txt_invite_email">Olá, gostaria de fazer-lhe um convite: </string>
+    <string name="txt_settings">Configurações</string>
+    <string name="stopservice">Parar serviço</string>
+    <string name="startservice">Iniciar serviço</string>
+</resources>
