@@ -76,7 +76,7 @@ function API(opt) {
 
     if (Ti.Network.online) {
 
-        //Ti.API.info(Ti.App.Properties.getString("pod") + url);
+        Ti.API.info(Ti.App.Properties.getString("pod") + url);
         xhr.open(type, Ti.App.Properties.getString("pod") + url);
 
         // generate header
@@ -102,7 +102,7 @@ function API(opt) {
         if (Ti.App.Properties.getString("cookie_session") != "") {
             xhr.setRequestHeader('Cookie', Ti.App.Properties.getString("cookie_session"));
         }
-        
+
         if (opt.token) {
             xhr.setRequestHeader('X-Requested-With', "XMLHttpRequest");
             xhr.setRequestHeader('X-CSRF-Token', Ti.App.Properties.getString("token"));

@@ -3,9 +3,10 @@ var data = [];
 
 var getStream = args.getStream;
 var showImage = args.showImage || null;
+var getMore = args.getMore || null;
 
 function onClickLink(e) {
-    Ti.API.info(e.url);
+    //Ti.API.info(e.url);
     if (e.url) {
         if (e.url.substr(0, 10) == "pusteblume") {
             // handle hashtags
@@ -18,40 +19,56 @@ function onClickLink(e) {
         // click the textfield but not a link
         //Ti.API.info("show comments");
         onClickItem({
-            source : {
-                name : "", row : {
-                    id : e.source.rowID
+            source: {
+                name: "",
+                row: {
+                    id: e.source.rowID
                 }
             }
         });
     }
 }
 
-$.setData = function(d) {
+$.appendData = function (d) {
+    // add elements to table
+    d["append"] = true;
+    setData(d);
+}
+
+$.setData = function (d) {
     data = d;
     var mainData = [];
 
     for (var i = 0; i < data.length; ++i) {
         var row = Ti.UI.createTableViewRow({
-            height : Ti.UI.SIZE
+            height: Ti.UI.SIZE
         });
 
         var img = $.UI.create('ImageView', {
-            classes : ["img_author"], image : data[i].icon
+            classes: ["img_author"],
+            image: data[i].icon
         });
 
         var lbl_author = $.UI.create('Label', {
-            classes : ["txt_author"], text : data[i].author
+            classes: ["txt_author"],
+            text: data[i].author
         });
 
         var view_content = Ti.UI.createView({
-            height : Ti.UI.SIZE, left : 0, right : 0, top : 34, layout : "vertical"
+            height: Ti.UI.SIZE,
+            left: 0,
+            right: 0,
+            top: 34,
+            layout: "vertical"
         });
 
         //var StyledLabel = require('ti.styledlabel');
 
         var lbl_text = $.UI.create('Label', {
-            classes : ["lbl_text"], html : Alloy.Globals.replaceText(data[i].text), top : 0, height : Ti.UI.SIZE
+            classes: ["lbl_text"],
+            html: Alloy.Globals.replaceText(data[i].text),
+            top: 0,
+            height: Ti.UI.SIZE
         });
 
         /*
@@ -66,7 +83,14 @@ $.setData = function(d) {
         var img_post = null;
         if (data[i].photo != null && data[i].photo != "") {
             img_post = Ti.UI.createImageView({
-                imageBig : data[i].photoBig, image : data[i].photo, width : 50, height : 50, top : 0, right : 14, borderWidth : 1, borderColor : "#444"
+                imageBig: data[i].photoBig,
+                image: data[i].photo,
+                width: 50,
+                height: 50,
+                top: 0,
+                right: 14,
+                borderWidth: 1,
+                borderColor: "#444"
             });
 
             function onClickImage(e) {
@@ -75,7 +99,6 @@ $.setData = function(d) {
                 if (showImage)
                     showImage(e.source.imageBig);
             }
-
 
             img_post.addEventListener("click", onClickImage);
         }
@@ -88,46 +111,79 @@ $.setData = function(d) {
         }
 
         var img_public = Ti.UI.createLabel({
-            text : pubimg, left : 6, width : 10, height : 10, top : 70, font : {
-                fontFamily : "FontAwesome", fontSize : 10
+            text: pubimg,
+            left: 6,
+            width: 10,
+            height: 10,
+            top: 70,
+            font: {
+                fontFamily: "FontAwesome",
+                fontSize: 10
             }
         });
         var lbl_public = $.UI.create('Label', {
-            classes : ["txt_small"], text : pubtxt, top : img_public.top - 4, left : 20, width : 35, textAlign : "left"
+            classes: ["txt_small"],
+            text: pubtxt,
+            top: img_public.top - 4,
+            left: 20,
+            width: 35,
+            textAlign: "left"
         });
 
         pubimg = null;
         pubtxt = null;
 
         var img_likes = Ti.UI.createLabel({
-            text : "", left : img_public.left, width : 12, height : 10, top : img_public.top + 20, font : {
-                fontFamily : "FontAwesome", fontSize : 10
+            text: "",
+            left: img_public.left,
+            width: 12,
+            height: 10,
+            top: img_public.top + 20,
+            font: {
+                fontFamily: "FontAwesome",
+                fontSize: 10
             }
         });
 
         var lbl_likes = $.UI.create('Label', {
-            classes : ["txt_small"], text : data[i].like_count, top : img_likes.top - 4, left : lbl_public.left, width : 20, textAlign : "left"
+            classes: ["txt_small"],
+            text: data[i].like_count,
+            top: img_likes.top - 4,
+            left: lbl_public.left,
+            width: 20,
+            textAlign: "left"
         });
 
         var img_comments = Ti.UI.createLabel({
-            text : "", width : 10, height : 10, top : img_likes.top + 20, left : img_public.left, font : {
-                fontFamily : "FontAwesome", fontSize : 10
+            text: "",
+            width: 10,
+            height: 10,
+            top: img_likes.top + 20,
+            left: img_public.left,
+            font: {
+                fontFamily: "FontAwesome",
+                fontSize: 10
             }
         });
 
         var lbl_comments = $.UI.create('Label', {
-            classes : ["txt_small"], text : data[i].comment_count, top : img_comments.top - 4, left : lbl_public.left, width : 20, textAlign : "left"
+            classes: ["txt_small"],
+            text: data[i].comment_count,
+            top: img_comments.top - 4,
+            left: lbl_public.left,
+            width: 20,
+            textAlign: "left"
         });
 
         var lbl_date = $.UI.create('Label', {
-            classes : ["txt_date"], text : data[i].date, top : lbl_author.top + 1
+            classes: ["txt_date"],
+            text: data[i].date,
+            top: lbl_author.top + 1
         });
 
         view_content.add(lbl_text);
         if (img_post != null)
             view_content.add(img_post);
-
-
 
         row.add(img);
         row.add(lbl_author);
@@ -136,7 +192,11 @@ $.setData = function(d) {
 
         if (data[i].type != "comments") {
             var spacer = Ti.UI.createView({
-                left : 0, top : 0, height : 125, width : 1, touchEnabled : false
+                left: 0,
+                top: 0,
+                height: 125,
+                width: 1,
+                touchEnabled: false
             });
 
             row.add(img_comments);
@@ -200,23 +260,43 @@ function onShowMore(e) {
 function onClickItem(e) {
     // clicked an item
     if (e.source.name != "more") {
-        if (args.click) {
-            if (e.row || e.source.row) {
-                var id = null;
-                if (e.row) {
-                    id = e.row.id;
-                } else if (e.source.row) {
-                    id = e.source.row.id;
-                }
-                if (id != null) {
-                    var cont = Alloy.createController("comments", {
-                        id : data[id].id, data : data[id], refesh : getStream
-                    }).getView();
-                    cont.open();
-                }
+        if (e.row || e.source.row) {
+            var id = null;
+            if (e.row) {
+                id = e.row.id;
+            } else if (e.source.row) {
+                id = e.source.row.id;
+            }
+            if (id != null) {
+                var cont = Alloy.createController("comments", {
+                    id: data[id].id,
+                    data: data[id],
+                    refesh: getStream
+                }).getView();
+                cont.open();
             }
         }
     }
 }
 
+
+function onScroll(e) {
+    if (e.firstVisibleItem > e.totalItemCount - 10) {
+    
+        $.btn_more.show();
+    }
+}
+
+function onClickMore(e) {
+    $.btn_more.hide();
+    if (getMore) {
+        getMore();
+    }
+}
+
+if (args.click) {
+    // show refresh for normal list first
+    $.btn_more.addEventListener("click", onClickMore);
+}
 $.tbl.addEventListener("click", onClickItem);
+$.tbl.addEventListener("scroll", onScroll);

@@ -8,7 +8,7 @@ var lastID = 0;
 var isOut = false;
 
 var content = Alloy.createWidget("list", "widget", {
-    getStream : getStream, click : true, showImage : showImage
+    getStream : getStream, click : true, showImage : showImage, getMore:getMore
 });
 $.content.add(content.getView());
 
@@ -122,6 +122,7 @@ function onStream(e) {
     newPosts = 0;
     var lid = Ti.App.Properties.getString("lastPost");
 
+    Ti.API.info(JSON.stringify(e));
     for (var i = 0; i < e.length; ++i) {
 
         var txt = String(e[i].text).replace(/<(?:.|\n)*?>/gm, '');
@@ -524,6 +525,67 @@ function onTouchStart(e) {
 
 function onTouchEnd(e) {
     e.source.color = "#bbb";
+}
+
+function onStreamRefresh(e){
+    // get more items
+    data = [];
+    newPosts = 0;
+    var lid = Ti.App.Properties.getString("lastPost");
+
+    for (var i = 0; i < e.length; ++i) {
+
+        var txt = String(e[i].text).replace(/<(?:.|\n)*?>/gm, '');
+        var myFav = false;
+        var favID = 0;
+        var photo = "";
+        var photoBig = "";
+
+        if (e[i].interactions.likes.length > 0) {
+            myFav = true;
+            favID = e[i].interactions.likes[0].id;
+        }
+
+        if (e[i].photos.length > 0) {
+            photo = e[i].photos[0].sizes.small;
+            photoBig = e[i].photos[0].sizes.large;
+        }
+
+        data.push({
+            photo : photo, photoBig : photoBig, date : Alloy.Globals.formatDate(e[i].created_at), myFav : myFav, favID : favID, isPublic : e[i]["public"], author : e[i].author.name, comment_count : String(e[i].interactions.comments_count), text : txt, icon : e[i].author.avatar.small, id : e[i].id, like_count : String(e[i].interactions.likes_count)
+        });
+        txt = null;
+        myFav = null;
+        favID = null;
+        photo = null;
+        photoBig = null;
+        if (lastID < e[i].id) {
+            newPosts++;
+            if (lid < e[i].id)
+                lid = e[i].id;
+        }
+    }
+
+    if (newPosts > 0) {
+        showNotification(newPosts);
+        newPostss = 0;
+    }
+    lastID = lid;
+    Ti.App.Properties.setString("lastPost", lastID);
+    lid = null;
+    content.appendData(data);
+    $.waiting.hide();
+}
+
+function getMore(e){
+    // load more items
+    $.waiting.message = " " + L("getStream");
+    $.waiting.show();
+/*
+    var lastTime =0;    // TODO find last time
+    require("/api").createAPI({
+        type : "GET", url : "/" + Ti.App.Properties.getString("stream")+"?_="+lastTime, success : onStreamRefresh, token : true, error : onStreamError
+    });*/
 }
 
 // events
