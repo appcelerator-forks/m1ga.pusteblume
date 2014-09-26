@@ -29,13 +29,7 @@ function onClickLink(e) {
     }
 }
 
-$.appendData = function (d) {
-    // add elements to table
-    d["append"] = true;
-    setData(d);
-}
-
-$.setData = function (d) {
+$.setData = function(d) {
     data = d;
     var mainData = [];
 
@@ -81,7 +75,7 @@ $.setData = function (d) {
          lbl_text.addEventListener('click', onClickLink);
          */
         var img_post = null;
-        if (data[i].photo != null && data[i].photo != "") {
+        if (data[i].photo !== null && data[i].photo !== "") {
             img_post = Ti.UI.createImageView({
                 imageBig: data[i].photoBig,
                 image: data[i].photo,
@@ -182,7 +176,7 @@ $.setData = function (d) {
         });
 
         view_content.add(lbl_text);
-        if (img_post != null)
+        if (img_post !== null)
             view_content.add(img_post);
 
         row.add(img);
@@ -239,11 +233,27 @@ $.setData = function (d) {
          } else {
          row.className = "normal";
          }*/
-        mainData.push(row);
+
+        if (data.append===true){
+            // append rows
+            $.tbl.appendRow(row);
+        } else {
+            // add to array
+            mainData.push(row);
+        }
     }
 
-    $.tbl.data = mainData;
+    if (mainData.length>0) {
+        // set data if array is not empty
+        $.tbl.data = mainData;
+    }
     mainData = null;
+};
+
+$.appendData = function(d) {
+    // add elements to table
+    d["append"] = true;
+    this.setData(d);
 };
 
 function onShowMore(e) {
@@ -267,7 +277,7 @@ function onClickItem(e) {
             } else if (e.source.row) {
                 id = e.source.row.id;
             }
-            if (id != null) {
+            if (id !== null) {
                 var cont = Alloy.createController("comments", {
                     id: data[id].id,
                     data: data[id],
@@ -279,10 +289,9 @@ function onClickItem(e) {
     }
 }
 
-
 function onScroll(e) {
     if (e.firstVisibleItem > e.totalItemCount - 10) {
-    
+
         $.btn_more.show();
     }
 }

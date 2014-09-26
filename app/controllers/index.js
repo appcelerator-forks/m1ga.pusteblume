@@ -30,7 +30,11 @@ if (!Ti.App.Properties.hasProperty("lastPost")) {
     lastID = Ti.App.Properties.getString("lastPost");
 }
 
-if (!Ti.App.Properties.hasProperty("stream") || Ti.App.Properties.getString("stream") == "") {
+if (!Ti.App.Properties.hasProperty("lastDate")) {
+    Ti.App.Properties.setString("lastDate", new Date().getTime());
+}
+
+if (!Ti.App.Properties.hasProperty("stream") || Ti.App.Properties.getString("stream") === "") {
     Ti.App.Properties.setString("stream", "stream");
 }
 
@@ -59,7 +63,7 @@ if (!Ti.App.Properties.hasProperty("cookie_user"))
 
 $.index.open();
 
-if (Ti.App.Properties.getString("cookie_session") == "" || Ti.App.Properties.getBool("loggedIn") == false) {
+if (Ti.App.Properties.getString("cookie_session") === "" || Ti.App.Properties.getBool("loggedIn") == false) {
     var obj = Alloy.createController("login", {
         getStream : getStream, getToken : getToken, getUserInfo : getUserInfo
     }).getView();
@@ -122,7 +126,6 @@ function onStream(e) {
     newPosts = 0;
     var lid = Ti.App.Properties.getString("lastPost");
 
-    Ti.API.info(JSON.stringify(e));
     for (var i = 0; i < e.length; ++i) {
 
         var txt = String(e[i].text).replace(/<(?:.|\n)*?>/gm, '');
@@ -141,6 +144,9 @@ function onStream(e) {
             photoBig = e[i].photos[0].sizes.large;
         }
 
+        var d = new Date(e[i].created_at);
+
+
         data.push({
             photo : photo, photoBig : photoBig, date : Alloy.Globals.formatDate(e[i].created_at), myFav : myFav, favID : favID, isPublic : e[i]["public"], author : e[i].author.name, comment_count : String(e[i].interactions.comments_count), text : txt, icon : e[i].author.avatar.small, id : e[i].id, like_count : String(e[i].interactions.likes_count)
         });
@@ -154,6 +160,11 @@ function onStream(e) {
             if (lid < e[i].id)
                 lid = e[i].id;
         }
+
+        if (d.getTime()/1000 < Ti.App.Properties.getString("lastDate")) {
+            Ti.App.Properties.setString("lastDate", d.getTime()/1000);
+        }
+        d=null;
     }
 
     if (newPosts > 0) {
@@ -173,7 +184,7 @@ function onStreamError(e) {
 
 function onClickStreamOption(e) {
     var txt = "stream";
-    if (e.source.optionID == 0) {
+    if (e.source.optionID === 0) {
         txt = "stream";
         $.lbl_stream.text = L("txt_stream");
     } else if (e.source.optionID == 1) {
@@ -262,7 +273,7 @@ function onNotification(e) {
     for ( i = 0; i < e.length; ++i) {
         for (var obj in e[i]) {
             // check for unread stuff
-            if (e[i][obj].unread == true) {
+            if (e[i][obj].unread === true) {
 
                 if (new Date(e[i][obj].created_at) > lastSaved) {
                     // only count new stuff since last check - so we can keep the status in web
@@ -275,7 +286,7 @@ function onNotification(e) {
 
         }
     }
-    if (last == 0) {
+    if (last === 0) {
         last = lastSaved;
     }
     Ti.App.Properties.setString("lastNotification", last);
@@ -354,7 +365,7 @@ function onClickSubmit(e) {
     $.waiting.message = " " + L("posting") + "...";
     $.waiting.show();
     $.text.blur();
-    if (blob != null) {
+    if (blob !== null) {
         require("/api").createAPI({
             type : "POST", timeout : 20000, isBinary : true, token : true, filename : blob.file.name, url : "/photos?photo[pending]=true&photo[aspect_ids][0]=" + Ti.App.Properties.getString("aspectID") + "&set_profile_image=&qqfile=" + blob.file.name, success : onSubmitPhoto, error : onSubmitPhotoError, parameter : {
                 data : blob
@@ -363,11 +374,11 @@ function onClickSubmit(e) {
     } else {
 
         match = /\n/ig;
-        //Ti.API.info($.text.value);
+
         txt = String($.text.value).replace(match, "\\r\\n");
 
-        //Ti.API.info(txt);
-        if (e.photoID == null) {
+
+        if (e.photoID === null) {
             require("/api").createAPI({
                 type : "POST", postJSON : true, token : true, url : "/status_messages", success : onSubmit, error : onSubmitError, parameter : {
                     "location_coords" : "", "aspect_ids" : Ti.App.Properties.getString("aspectID"), "status_message" : {
@@ -388,13 +399,13 @@ function onClickSubmit(e) {
 }
 
 function onResume(e) {
-    if (Ti.App.Properties.getString("cookie_session") != "") {
+    if (Ti.App.Properties.getString("cookie_session") !== "") {
         getStream();
         getUserInfo();
     }
 }
 
-if (Ti.App.Properties.getString("cookie_session") != "" && Ti.App.Properties.getBool("loggedIn")) {
+if (Ti.App.Properties.getString("cookie_session") !== "" && Ti.App.Properties.getBool("loggedIn")) {
     getStream();
     getUserInfo();
 }
@@ -405,7 +416,7 @@ function onSelectPhoto(e) {
 }
 
 function onClickPhoto(e) {
-    if (blob == null) {
+    if (blob === null) {
         Ti.Media.openPhotoGallery({
             success : onSelectPhoto, mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
         });
@@ -503,7 +514,7 @@ function onInviteError(e) {
 }
 
 function onClickInvite(e) {
-    if (Ti.App.Properties.getString("invitelink") == "") {
+    if (Ti.App.Properties.getString("invitelink") === "") {
         require("/api").createAPI({
             type : "GET", url : "/users/invitations", success : onInvite, error : onInviteError, noJSON : true
         });
@@ -531,6 +542,9 @@ function onStreamRefresh(e){
     // get more items
     data = [];
     newPosts = 0;
+
+
+
     var lid = Ti.App.Properties.getString("lastPost");
 
     for (var i = 0; i < e.length; ++i) {
@@ -559,11 +573,20 @@ function onStreamRefresh(e){
         favID = null;
         photo = null;
         photoBig = null;
+
         if (lastID < e[i].id) {
             newPosts++;
             if (lid < e[i].id)
                 lid = e[i].id;
         }
+
+        var d = new Date(e[i].created_at);
+        if (d.getTime()/1000 < Ti.App.Properties.getString("lastDate")) {
+            Ti.App.Properties.setString("lastDate", d.getTime()/1000);
+        }
+        d=null;
+
+        Ti.API.info(Ti.App.Properties.getString("lastDate"));
     }
 
     if (newPosts > 0) {
@@ -573,7 +596,10 @@ function onStreamRefresh(e){
     lastID = lid;
     Ti.App.Properties.setString("lastPost", lastID);
     lid = null;
-    content.appendData(data);
+    if (data.length>0){
+        content.appendData(data);
+    }
+
     $.waiting.hide();
 }
 
@@ -581,11 +607,10 @@ function getMore(e){
     // load more items
     $.waiting.message = " " + L("getStream");
     $.waiting.show();
-/*
-    var lastTime =0;    // TODO find last time
+
     require("/api").createAPI({
-        type : "GET", url : "/" + Ti.App.Properties.getString("stream")+"?_="+lastTime, success : onStreamRefresh, token : true, error : onStreamError
-    });*/
+        type : "GET", url : "/" + Ti.App.Properties.getString("stream")+"?max_time="+Ti.App.Properties.getString("lastDate"), success : onStreamRefresh, token : true, error : onStreamError
+    });
 }
 
 // events
