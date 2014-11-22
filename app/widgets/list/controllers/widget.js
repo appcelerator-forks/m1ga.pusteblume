@@ -56,8 +56,6 @@ $.setData = function(d) {
             layout: "vertical"
         });
 
-        //var StyledLabel = require('ti.styledlabel');
-
         var lbl_text = $.UI.create('Label', {
             classes: ["lbl_text"],
             html: Alloy.Globals.replaceText(data[i].text),
@@ -65,15 +63,7 @@ $.setData = function(d) {
             height: Ti.UI.SIZE
         });
 
-        /*
-         var lbl_text = StyledLabel.createLabel({
-         html : Alloy.Globals.replaceText(data[i].text), name : "text", color : '#ffffff', left : 75, right : 14, textAlign : "left", bottom : 15, height : Ti.UI.SIZE, verticalAlign : Titanium.UI.TEXT_VERTICAL_ALIGNMENT_TOP, font : {
-         fontSize : 12, fontFamily : "DejaVuSansCondensed"
-         }, rowID : i
-         });
 
-         lbl_text.addEventListener('click', onClickLink);
-         */
         var img_post = null;
         if (data[i].photo !== null && data[i].photo !== "") {
             img_post = Ti.UI.createImageView({
@@ -127,47 +117,6 @@ $.setData = function(d) {
         pubimg = null;
         pubtxt = null;
 
-        var img_likes = Ti.UI.createLabel({
-            text: "",
-            left: img_public.left,
-            width: 12,
-            height: 10,
-            top: img_public.top + 20,
-            font: {
-                fontFamily: "FontAwesome",
-                fontSize: 10
-            }
-        });
-
-        var lbl_likes = $.UI.create('Label', {
-            classes: ["txt_small"],
-            text: data[i].like_count,
-            top: img_likes.top - 4,
-            left: lbl_public.left,
-            width: 20,
-            textAlign: "left"
-        });
-
-        var img_comments = Ti.UI.createLabel({
-            text: "",
-            width: 10,
-            height: 10,
-            top: img_likes.top + 20,
-            left: img_public.left,
-            font: {
-                fontFamily: "FontAwesome",
-                fontSize: 10
-            }
-        });
-
-        var lbl_comments = $.UI.create('Label', {
-            classes: ["txt_small"],
-            text: data[i].comment_count,
-            top: img_comments.top - 4,
-            left: lbl_public.left,
-            width: 20,
-            textAlign: "left"
-        });
 
         var lbl_date = $.UI.create('Label', {
             classes: ["txt_date"],
@@ -176,8 +125,6 @@ $.setData = function(d) {
         });
 
         view_content.add(lbl_text);
-        if (img_post !== null)
-            view_content.add(img_post);
 
         row.add(img);
         row.add(lbl_author);
@@ -185,6 +132,55 @@ $.setData = function(d) {
         row.add(view_content);
 
         if (data[i].type != "comments") {
+
+            var img_likes = Ti.UI.createLabel({
+                text: "",
+                left: img_public.left,
+                width: 12,
+                height: 10,
+                top: img_public.top + 20,
+                font: {
+                    fontFamily: "FontAwesome",
+                    fontSize: 10
+                }
+            });
+
+            var lbl_likes = $.UI.create('Label', {
+                classes: ["txt_small"],
+                text: data[i].like_count,
+                top: img_likes.top - 4,
+                left: lbl_public.left,
+                width: 20,
+                textAlign: "left"
+            });
+
+            var img_comments = Ti.UI.createLabel({
+                text: "",
+                width: 10,
+                height: 10,
+                top: img_likes.top + 20,
+                left: img_public.left,
+                font: {
+                    fontFamily: "FontAwesome",
+                    fontSize: 10
+                }
+            });
+
+            var lbl_comments = $.UI.create('Label', {
+                classes: ["txt_small"],
+                text: data[i].comment_count,
+                top: img_comments.top - 4,
+                left: lbl_public.left,
+                width: 20,
+                textAlign: "left"
+            });
+
+
+
+            if (img_post !== null)
+                view_content.add(img_post);
+
+
             var spacer = Ti.UI.createView({
                 left: 0,
                 top: 0,
@@ -204,35 +200,6 @@ $.setData = function(d) {
 
         row.id = i;
 
-        /*
-         if (lbl_text.toImage().height > 160) {
-         var view_more = Ti.UI.createView({
-         left : 0, right : 0, bottom : 0, height : 20,opacity:0.5, backgroundGradient : {
-         type : 'linear', startPoint : {
-         x : '0%', y : '0%'
-         }, endPoint : {
-         x : '0%', y : '100%'
-         }, colors : [{
-         color : '#fff', offset : 0.2
-         }, {
-         color : '#000', offset : 1
-         }],
-         }, rowID : i, fullHeight : lbl_text.toImage().height, name : "more"
-         });
-         var lbl_more = Ti.UI.createLabel({
-         text : L("more"), font : {
-         fontSize : 10
-         }, color : "#222"
-         });
-
-         view_more.addEventListener("click", onShowMore);
-         row.className = "small";
-         row.add(view_more);
-         view_more.add(lbl_more);
-         //row.height = 160;
-         } else {
-         row.className = "normal";
-         }*/
 
         if (data.append===true){
             // append rows

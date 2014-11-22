@@ -28,7 +28,7 @@ Alloy.Globals.formatDate = function(date) {
     if (mon < 10)
         mon = "0" + mon;
 
-    return h + ":" + m + " " + d + "." + mon + "." + dat.getFullYear();
+    return h + ":" + m + " - " + d + "." + mon + "." + String(dat.getFullYear()).substr(2);
 };
 
 Alloy.Globals.replaceText = function(txt) {

@@ -30,9 +30,10 @@ if (!Ti.App.Properties.hasProperty("lastPost")) {
     lastID = Ti.App.Properties.getString("lastPost");
 }
 
-if (!Ti.App.Properties.hasProperty("lastDate")) {
-    Ti.App.Properties.setString("lastDate", new Date().getTime());
-}
+//if (!Ti.App.Properties.hasProperty("lastDate")) {
+    Ti.App.Properties.setString("lastDate", new Date().getTime()/1000);
+//}
+
 
 if (!Ti.App.Properties.hasProperty("stream") || Ti.App.Properties.getString("stream") === "") {
     Ti.App.Properties.setString("stream", "stream");
@@ -269,7 +270,7 @@ function onNotification(e) {
     var lastSaved = new Date(Ti.App.Properties.getString("lastNotification"));
     var last = 0;
 
-    //Ti.API.info("last: " + lastSaved);
+    
     for ( i = 0; i < e.length; ++i) {
         for (var obj in e[i]) {
             // check for unread stuff
@@ -320,7 +321,7 @@ function onNotificationError(e) {
 
 function checkNotification(e) {
     // check if there is something new
-    //Ti.API.info("check notifications");
+
     require("/api").createAPI({
         type : "GET", url : "/notifications", success : onNotification, error : onNotificationError, parameter : {
         }
@@ -581,12 +582,12 @@ function onStreamRefresh(e){
         }
 
         var d = new Date(e[i].created_at);
+
+
         if (d.getTime()/1000 < Ti.App.Properties.getString("lastDate")) {
             Ti.App.Properties.setString("lastDate", d.getTime()/1000);
         }
         d=null;
-
-        Ti.API.info(Ti.App.Properties.getString("lastDate"));
     }
 
     if (newPosts > 0) {
