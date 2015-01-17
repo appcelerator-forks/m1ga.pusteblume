@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="getStream">gegevens ophalen</string>
+    <string name="getAspects">aspecten ophalen</string>
+    <string name="show">laat zien</string>
+    <string name="posting">plaatsen</string>
+    <string name="login">Aanmelden</string>
+    <string name="noToken">kan token niet verkrijgen - probeer opnieuw</string>
+    <string name="getToken">verkrijg token</string>
+    <string name="setUsername">gebruikersnaam moet er zo uit zien name@pod.com</string>
+    <string name="fieldEmpty">Geen gebruikersnaam of wachtwoord ingevult</string>
+    <string name="loginTitle">Verbind met jou pod:</string>
+    <string name="post">Plaats</string>
+    <string name="photo">Foto</string>
+    <string name="getComments">commentaar ontvangen</string>
+    <string name="somethingNew">nieuwe dingen</string>
+    <string name="error">fout</string>
+    <string name="more">meer</string>
+    <string name="register">Maak account</string>
+    <string name="txt_stream">Stream</string>
+    <string name="txt_activity">Mijn activiteiten</string>
+    <string name="txt_mentions">Vermeldingen</string>
+    <string name="txt_followedtags">Gevolgde tags</string>
+    <string name="txt_invite">Verteld een vriend</string>
+    <string name="txt_invite_email">Hallo, accepteer je mijn uitnodiging?: </string>
+    <string name="txt_settings">Instellingen</string>
+    <string name="stopservice">Stop service</string>
+    <string name="startservice">Start service</string>
+</resources>
