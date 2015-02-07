@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.miga.pusteblume</id>
     <name>Pusteblume</name>
-    <version>1.23</version>
+    <version>1.25</version>
     <publisher>Michael Gangolf</publisher>
     <url>http://www.migaweb.de</url>
     <description>Diaspora client for Android</description>

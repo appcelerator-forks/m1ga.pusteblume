@@ -4,6 +4,7 @@ var data = [];
 var getStream = args.getStream;
 var showImage = args.showImage || null;
 var getMore = args.getMore || null;
+var showImages = Ti.App.Properties.getBool("showImages");
 
 function onClickLink(e) {
     //Ti.API.info(e.url);
@@ -46,9 +47,10 @@ $.setData = function(d) {
             top: 0
         });
 
+
         var img = $.UI.create('ImageView', {
             classes: ["img_author"],
-            image: data[i].icon,
+            image: (showImages)?data[i].icon:"",
             author: data[i].author,
             name: "userimage"
         });
@@ -69,7 +71,7 @@ $.setData = function(d) {
         var imageRow = null;
         var lastImage = 0;
 
-        if (data[i].photos && data[i].photos.length > 0) {
+        if (showImages && data[i].photos && data[i].photos.length > 0) {
             imageRow = $.UI.create("View", {
                 bottom: 0,
                 left: 75,

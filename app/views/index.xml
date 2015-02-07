@@ -1,17 +1,8 @@
 <Alloy>
     <Window zIndex="10">
-        <View id="background"/>
-        <View class="menu">
-            <View id="view_stream">
-                <View id="view_square1"/>
-                <View id="view_square2"/>
-                <View id="view_square3"/>
-                <Label id="lbl_stream">Stream</Label>
-            </View>
-            <Button id="btn_write"></Button>
-            <Button id="btn_refresh"></Button>
-            <Button id="btn_logout"></Button>
-        </View>
+        <View id="background" />
+
+
         <View id="content"></View>
         <View id="view_post">
             <View id="view_linie"></View>
@@ -20,9 +11,9 @@
             <Button id="btn_submit" titleid="post"></Button>
             <Button id="btn_photo" titleid="photo"></Button>
         </View>
-        <ActivityIndicator id="waiting"></ActivityIndicator>
         <View id="view_aspects"></View>
         <!-- stream / activity menu -->
+        <View id="view_menu_background" />
         <View id="view_menu_stream">
             <View id="view_me">
                 <ImageView id="img_me"></ImageView>
@@ -38,6 +29,23 @@
 
             </ScrollView>
             <Label id="lbl_invite" class="lbl_button" textid="txt_invite"></Label>
+        </View>
+        <!-- menu -->
+        <View class="menu">
+            <View id="view_stream">
+                <View id="view_square1" />
+                <View id="view_square2" />
+                <View id="view_square3" />
+                <Label id="lbl_stream">Stream</Label>
+            </View>
+            <Button id="btn_write"></Button>
+            <Button id="btn_refresh"></Button>
+            <Button id="btn_logout"></Button>
+        </View>
+
+        <!-- loading -->
+        <View id="view_loading">
+            <ActivityIndicator id="waiting"></ActivityIndicator>
         </View>
         <!-- photo overlay-->
         <View id="view_photo">

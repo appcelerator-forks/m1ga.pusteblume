@@ -174,3 +174,12 @@ backgroundColor:"#000",opacity:0.8
 "#btn_close":{
 width:35,height:35,right:0,top:0
 }
+
+
+"#view_loading":{
+	left:0,right:0,bottom:0,top:0,backgroundColor:"#AA000000",visible:false
+}
+
+"#view_menu_background":{
+	left:0,right:0,bottom:0,top:0,backgroundColor:"#AA000000",visible:false
+}

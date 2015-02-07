@@ -7,6 +7,10 @@ var newPosts = 0;
 var lastID = 0;
 var isOut = false;
 
+if (!Ti.App.Properties.hasProperty("showImages")) {
+    Ti.App.Properties.setBool("showImages", true);
+}
+
 var content = Alloy.createWidget("list", "widget", {
     getStream: getStream,
     click: true,
@@ -18,6 +22,8 @@ $.content.add(content.getView());
 if (!Ti.App.Properties.hasProperty("token")) {
     Ti.App.Properties.setString("token", "");
 }
+
+
 
 if (!Ti.App.Properties.hasProperty("invitelink")) {
     Ti.App.Properties.setString("invitelink", "");
@@ -112,7 +118,7 @@ function getStream() {
     // get stream
     //
     $.waiting.message = " " + L("getStream");
-    $.waiting.show();
+    showLoading();
 
     require("/api").createAPI({
         type: "GET",
@@ -188,7 +194,7 @@ function onStream(e) {
     Ti.App.Properties.setString("lastPost", lastID);
     lid = null;
     content.setData(data);
-    $.waiting.hide();
+    hideLoading();
 
     // set all read
     require("/api").createAPI({
@@ -200,7 +206,7 @@ function onStream(e) {
 }
 
 function onStreamError(e) {
-    $.waiting.hide();
+    hideLoading();
 }
 
 function onClickStreamOption(e) {
@@ -230,16 +236,18 @@ function onClickStreamOption(e) {
 }
 
 function onClickStream(e) {
-
+    // show sidemenu
     var ani = Ti.UI.createAnimation();
     if (isOut) {
         // hide menu
         ani.left = -200;
         isOut = false;
+        $.view_menu_background.hide();
     } else {
         // show menu
         ani.left = 0;
         isOut = true;
+        $.view_menu_background.show();
     }
     ani.duration = 200;
     $.view_menu_stream.animate(ani);
@@ -250,7 +258,7 @@ function onLogout(e) {
     Ti.App.Properties.setString("cookie_session", "");
     Ti.App.Properties.setString("token", "");
     Ti.App.Properties.setBool("loggedIn", false);
-    $.waiting.hide();
+    hideLoading();
     $.text.value = "";
     var obj = Alloy.createController("login", {
         getStream: getStream,
@@ -264,7 +272,7 @@ function onLogout(e) {
 }
 
 function onLogoutError(e) {
-    $.waiting.hide();
+    hideLoading();
     Ti.App.Properties.setString("cookie_session", "");
     Ti.App.Properties.setString("token", "");
     Ti.App.Properties.setBool("loggedIn", false);
@@ -279,7 +287,7 @@ function onLogoutError(e) {
 
 function onClickLogout(e) {
     // logout
-    $.waiting.show();
+    showLoading();
 
     require("/api").createAPI({
         type: "POST",
@@ -384,7 +392,7 @@ function onSubmit(e) {
 
 function onSubmitError(e) {
     //getStream();
-    $.waiting.hide();
+    hideLoading();
 }
 
 function onClickCancel(e) {
@@ -403,14 +411,14 @@ function onSubmitPhoto(e) {
 }
 
 function onSubmitPhotoError(e) {
-    $.waiting.hide();
+    hideLoading();
 }
 
 function onClickSubmit(e) {
     // post message
     //
     $.waiting.message = " " + L("posting") + "...";
-    $.waiting.show();
+    showLoading();
     $.text.blur();
     if (blob !== null) {
         require("/api").createAPI({
@@ -694,13 +702,13 @@ function onStreamRefresh(e) {
         content.appendData(data);
     }
 
-    $.waiting.hide();
+    hideLoading();
 }
 
 function getMore(e) {
     // load more items
     $.waiting.message = " " + L("getStream");
-    $.waiting.show();
+    showLoading();
 
     require("/api").createAPI({
         type: "GET",
@@ -711,6 +719,22 @@ function getMore(e) {
     });
 }
 
+
+function showLoading(){
+    $.view_loading.show();
+    $.waiting.show();
+}
+
+function hideLoading(){
+    $.view_loading.hide();
+    $.waiting.hide();
+}
+
+function onClickMenuBackground(e){
+    // close menu
+    onClickStream(null);
+    //$.view_menu_background.hide();
+}
 // events
 //
 Ti.App.addEventListener("resume", onResume);
@@ -728,6 +752,7 @@ $.btn_refresh.addEventListener("click", onRefresh);
 $.btn_close.addEventListener("click", onClickSliderClose);
 $.lbl_invite.addEventListener("click", onClickInvite);
 $.btn_settings.addEventListener("click", onClickSettings);
+$.view_menu_background.addEventListener("click", onClickMenuBackground);
 
 $.btn_logout.addEventListener("touchstart", onTouchStart);
 $.btn_write.addEventListener("touchstart", onTouchStart);
