@@ -31,16 +31,26 @@ function onClickLink(e) {
 
 $.setData = function(d) {
     data = d;
+
     var mainData = [];
 
     for (var i = 0; i < data.length; ++i) {
         var row = Ti.UI.createTableViewRow({
-            height: Ti.UI.SIZE
+            height: Ti.UI.SIZE,
+            layout: "vertical"
+        });
+        var top = $.UI.create("View", {
+            height: Ti.UI.SIZE,
+            left: 0,
+            right: 0,
+            top: 0
         });
 
         var img = $.UI.create('ImageView', {
             classes: ["img_author"],
-            image: data[i].icon
+            image: data[i].icon,
+            author: data[i].author,
+            name: "userimage"
         });
 
         var lbl_author = $.UI.create('Label', {
@@ -48,43 +58,42 @@ $.setData = function(d) {
             text: data[i].author
         });
 
-        var view_content = Ti.UI.createView({
-            height: Ti.UI.SIZE,
-            left: 0,
-            right: 0,
-            top: 34,
-            layout: "vertical"
-        });
-
         var lbl_text = $.UI.create('Label', {
             classes: ["lbl_text"],
             html: Alloy.Globals.replaceText(data[i].text),
-            top: 0,
+            left: 75,
+            top: 34,
             height: Ti.UI.SIZE
         });
 
+        var imageRow = null;
+        var lastImage = 0;
 
-        var img_post = null;
-        if (data[i].photo !== null && data[i].photo !== "") {
-            img_post = Ti.UI.createImageView({
-                imageBig: data[i].photoBig,
-                image: data[i].photo,
-                width: 50,
-                height: 50,
-                top: 0,
-                right: 14,
-                borderWidth: 1,
-                borderColor: "#444"
+        if (data[i].photos && data[i].photos.length > 0) {
+            imageRow = $.UI.create("View", {
+                bottom: 0,
+                left: 75,
+                right: 0,
+                layout: "horizontal",
+                height: Ti.UI.SIZE
             });
 
-            function onClickImage(e) {
-                e.bubbles = false;
-                e.cancelBubble = true;
-                if (showImage)
-                    showImage(e.source.imageBig);
+            for (var pPos = 0; pPos < data[i].photos.length; ++pPos) {
+                if (lastImage != data[i].photos[pPos].guid) {
+                    var img_post = $.UI.create("ImageView", {
+                        dataPos: i,
+                        image: data[i].photos[pPos].sizes.small,
+                        width: 50,
+                        height: 50,
+                        borderWidth: 1,
+                        right: 0,
+                        borderColor: "#444"
+                    });
+                    img_post.addEventListener("click", onClickImage);
+                    imageRow.add(img_post);
+                }
+                lastImage = data[i].photos[pPos].guid;
             }
-
-            img_post.addEventListener("click", onClickImage);
         }
 
         var pubimg = "";
@@ -117,19 +126,16 @@ $.setData = function(d) {
         pubimg = null;
         pubtxt = null;
 
-
         var lbl_date = $.UI.create('Label', {
             classes: ["txt_date"],
             text: data[i].date,
             top: lbl_author.top + 1
         });
 
-        view_content.add(lbl_text);
-
-        row.add(img);
-        row.add(lbl_author);
-        row.add(lbl_date);
-        row.add(view_content);
+        top.add(img);
+        top.add(lbl_author);
+        top.add(lbl_date);
+        top.add(lbl_text);
 
         if (data[i].type != "comments") {
 
@@ -175,12 +181,6 @@ $.setData = function(d) {
                 textAlign: "left"
             });
 
-
-
-            if (img_post !== null)
-                view_content.add(img_post);
-
-
             var spacer = Ti.UI.createView({
                 left: 0,
                 top: 0,
@@ -189,28 +189,35 @@ $.setData = function(d) {
                 touchEnabled: false
             });
 
-            row.add(img_comments);
-            row.add(lbl_comments);
-            row.add(img_public);
-            row.add(lbl_public);
-            row.add(img_likes);
-            row.add(lbl_likes);
-            row.add(spacer);
+            top.add(img_comments);
+            top.add(lbl_comments);
+            top.add(img_public);
+            top.add(lbl_public);
+            top.add(img_likes);
+            top.add(lbl_likes);
+            top.add(spacer);
+
+            row.add(top);
+
+            if (imageRow) {
+                row.add(imageRow);
+            }
         }
 
         row.id = i;
 
-
-        if (data.append===true){
+        if (data.append === true) {
             // append rows
             $.tbl.appendRow(row);
         } else {
             // add to array
             mainData.push(row);
         }
+
+        img.addEventListener("click", onClickUserImage);
     }
 
-    if (mainData.length>0) {
+    if (mainData.length > 0) {
         // set data if array is not empty
         $.tbl.data = mainData;
     }
@@ -222,6 +229,21 @@ $.appendData = function(d) {
     d["append"] = true;
     this.setData(d);
 };
+
+function onClickUserImage(e) {
+    // click contact image
+    e.bubbles = false;
+    e.cancelBubble = true;
+    alert("TODO: Display page of " + e.source.author);
+}
+
+function onClickImage(e) {
+    // click on a photo
+    e.bubbles = false;
+    e.cancelBubble = true;
+    if (showImage)
+        showImage(data[e.source.dataPos].photos);
+}
 
 function onShowMore(e) {
     // fold in/out the selected row
@@ -236,7 +258,7 @@ function onShowMore(e) {
 
 function onClickItem(e) {
     // clicked an item
-    if (e.source.name != "more") {
+    if (e.source.name != "more" && e.source.name != "userimage") {
         if (e.row || e.source.row) {
             var id = null;
             if (e.row) {

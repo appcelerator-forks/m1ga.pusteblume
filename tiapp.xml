@@ -33,8 +33,8 @@
         <services>
             <service type="interval" url="service_fetch.js" />
         </services>
-        <manifest android:installLocation="auto" android:versionCode="24" android:versionName="1.24">
-            <uses-sdk android:targetSdkVersion="17" />
+        <manifest android:installLocation="auto" android:versionCode="25" android:versionName="1.25">
+            <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19" />
             <application android:theme="@style/Theme.NoActionBar" />
         </manifest>
     </android>
@@ -57,7 +57,7 @@
         <target device="mobileweb">false</target>
         <target device="tizen">false</target>
     </deployment-targets>
-    <sdk-version>3.4.1.GA</sdk-version>
+    <sdk-version>3.5.0.GA</sdk-version>
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>

@@ -8,7 +8,10 @@ var lastID = 0;
 var isOut = false;
 
 var content = Alloy.createWidget("list", "widget", {
-    getStream : getStream, click : true, showImage : showImage, getMore:getMore
+    getStream: getStream,
+    click: true,
+    showImage: showImage,
+    getMore: getMore
 });
 $.content.add(content.getView());
 
@@ -31,9 +34,8 @@ if (!Ti.App.Properties.hasProperty("lastPost")) {
 }
 
 //if (!Ti.App.Properties.hasProperty("lastDate")) {
-    Ti.App.Properties.setString("lastDate", new Date().getTime()/1000);
+Ti.App.Properties.setString("lastDate", new Date().getTime() / 1000);
 //}
-
 
 if (!Ti.App.Properties.hasProperty("stream") || Ti.App.Properties.getString("stream") === "") {
     Ti.App.Properties.setString("stream", "stream");
@@ -66,7 +68,9 @@ $.index.open();
 
 if (Ti.App.Properties.getString("cookie_session") === "" || Ti.App.Properties.getBool("loggedIn") == false) {
     var obj = Alloy.createController("login", {
-        getStream : getStream, getToken : getToken, getUserInfo : getUserInfo
+        getStream: getStream,
+        getToken: getToken,
+        getUserInfo: getUserInfo
     }).getView();
     obj.open();
 }
@@ -92,7 +96,11 @@ function getToken() {
     Ti.API.info("get login token");
 
     require("/api").createAPI({
-        type : "GET", url : "/stream", success : onToken, error : onTokenError, noJSON : true
+        type: "GET",
+        url: "/stream",
+        success: onToken,
+        error: onTokenError,
+        noJSON: true
     });
 }
 
@@ -107,7 +115,11 @@ function getStream() {
     $.waiting.show();
 
     require("/api").createAPI({
-        type : "GET", url : "/" + Ti.App.Properties.getString("stream"), success : onStream, token : true, error : onStreamError
+        type: "GET",
+        url: "/" + Ti.App.Properties.getString("stream"),
+        success: onStream,
+        token: true,
+        error: onStreamError
     });
 }
 
@@ -132,51 +144,59 @@ function onStream(e) {
         var txt = String(e[i].text).replace(/<(?:.|\n)*?>/gm, '');
         var myFav = false;
         var favID = 0;
-        var photo = "";
-        var photoBig = "";
 
         if (e[i].interactions.likes.length > 0) {
             myFav = true;
             favID = e[i].interactions.likes[0].id;
         }
 
-        if (e[i].photos.length > 0) {
-            photo = e[i].photos[0].sizes.small;
-            photoBig = e[i].photos[0].sizes.large;
-        }
-
         var d = new Date(e[i].created_at);
 
-
         data.push({
-            photo : photo, photoBig : photoBig, date : Alloy.Globals.formatDate(e[i].created_at), myFav : myFav, favID : favID, isPublic : e[i]["public"], author : e[i].author.name, comment_count : String(e[i].interactions.comments_count), text : txt, icon : e[i].author.avatar.small, id : e[i].id, like_count : String(e[i].interactions.likes_count)
+            photos: e[i].photos,
+            date: Alloy.Globals.formatDate(e[i].created_at),
+            myFav: myFav,
+            favID: favID,
+            isPublic: e[i]["public"],
+            author: e[i].author.name,
+            comment_count: String(e[i].interactions.comments_count),
+            text: txt,
+            icon: e[i].author.avatar.small,
+            id: e[i].id,
+            like_count: String(e[i].interactions.likes_count)
         });
         txt = null;
         myFav = null;
         favID = null;
-        photo = null;
-        photoBig = null;
         if (lastID < e[i].id) {
             newPosts++;
             if (lid < e[i].id)
                 lid = e[i].id;
         }
 
-        if (d.getTime()/1000 < Ti.App.Properties.getString("lastDate")) {
-            Ti.App.Properties.setString("lastDate", d.getTime()/1000);
+        if (d.getTime() / 1000 < Ti.App.Properties.getString("lastDate")) {
+            Ti.App.Properties.setString("lastDate", d.getTime() / 1000);
         }
-        d=null;
+        d = null;
     }
 
     if (newPosts > 0) {
         showNotification(newPosts);
-        newPostss = 0;
+        newPosts = 0;
     }
     lastID = lid;
     Ti.App.Properties.setString("lastPost", lastID);
     lid = null;
     content.setData(data);
     $.waiting.hide();
+
+    // set all read
+    require("/api").createAPI({
+        type: "GET",
+        url: "/notifications/read_all",
+        success: function() {},
+        error: function() {}
+    });
 }
 
 function onStreamError(e) {
@@ -233,7 +253,9 @@ function onLogout(e) {
     $.waiting.hide();
     $.text.value = "";
     var obj = Alloy.createController("login", {
-        getStream : getStream, getToken : getToken, getUserInfo : getUserInfo
+        getStream: getStream,
+        getToken: getToken,
+        getUserInfo: getUserInfo
     }).getView();
     obj.open();
 
@@ -248,7 +270,9 @@ function onLogoutError(e) {
     Ti.App.Properties.setBool("loggedIn", false);
     $.text.value = "";
     var obj = Alloy.createController("login", {
-        getStream : getStream, getToken : getToken, getUserInfo : getUserInfo
+        getStream: getStream,
+        getToken: getToken,
+        getUserInfo: getUserInfo
     }).getView();
     obj.open();
 }
@@ -258,8 +282,13 @@ function onClickLogout(e) {
     $.waiting.show();
 
     require("/api").createAPI({
-        type : "POST", url : "/users/sign_out", success : onLogout, error : onLogoutError, parameter : {
-            "_method" : "delete", "authenticity_token" : Ti.App.Properties.getString("token")
+        type: "POST",
+        url: "/users/sign_out",
+        success: onLogout,
+        error: onLogoutError,
+        parameter: {
+            "_method": "delete",
+            "authenticity_token": Ti.App.Properties.getString("token")
         }
     });
 }
@@ -270,8 +299,7 @@ function onNotification(e) {
     var lastSaved = new Date(Ti.App.Properties.getString("lastNotification"));
     var last = 0;
 
-    
-    for ( i = 0; i < e.length; ++i) {
+    for (i = 0; i < e.length; ++i) {
         for (var obj in e[i]) {
             // check for unread stuff
             if (e[i][obj].unread === true) {
@@ -300,19 +328,34 @@ function onNotification(e) {
 function showNotification(count) {
     // create notification
     var intent = Ti.Android.createIntent({
-        flags : Ti.Android.FLAG_ACTIVITY_CLEAR_TOP | Ti.Android.FLAG_ACTIVITY_NEW_TASK, className : 'com.miga.pusteblume.PusteblumeActivity'
+        flags: Ti.Android.FLAG_ACTIVITY_CLEAR_TOP | Ti.Android.FLAG_ACTIVITY_NEW_TASK,
+        className: 'com.miga.pusteblume.PusteblumeActivity'
     });
     intent.addCategory(Ti.Android.CATEGORY_LAUNCHER);
 
     var pending = Ti.Android.createPendingIntent({
-        intent : intent, flags : Ti.Android.FLAG_UPDATE_CURRENT
+        intent: intent,
+        flags: Ti.Android.FLAG_UPDATE_CURRENT
     });
 
     var notification = Ti.Android.createNotification({
-        icon : Ti.App.Android.R.drawable.appicon, contentTitle : 'Pusteblume', contentText : count + " " + L("somethingNew"), contentIntent : pending, defaults : Titanium.Android.DEFAULT_ALL, flags : Titanium.Android.ACTION_DEFAULT | Titanium.Android.FLAG_AUTO_CANCEL | Titanium.Android.FLAG_SHOW_LIGHTS
+        icon: Ti.App.Android.R.drawable.appicon,
+        contentTitle: 'Pusteblume',
+        contentText: count + " " + L("somethingNew"),
+        contentIntent: pending,
+        defaults: Titanium.Android.DEFAULT_ALL,
+        flags: Titanium.Android.ACTION_DEFAULT | Titanium.Android.FLAG_AUTO_CANCEL | Titanium.Android.FLAG_SHOW_LIGHTS
     });
     // Send the notification.
     Ti.Android.NotificationManager.notify(1, notification);
+
+    // mark all items read:
+    require("/api").createAPI({
+        type: "GET",
+        url: "/notifications/read_all",
+        success: function() {},
+        error: function() {}
+    });
 }
 
 function onNotificationError(e) {
@@ -323,8 +366,11 @@ function checkNotification(e) {
     // check if there is something new
 
     require("/api").createAPI({
-        type : "GET", url : "/notifications", success : onNotification, error : onNotificationError, parameter : {
-        }
+        type: "GET",
+        url: "/notifications",
+        success: onNotification,
+        error: onNotificationError,
+        parameter: {}
     });
 }
 
@@ -352,7 +398,7 @@ function onSubmitPhoto(e) {
     // photo uploaded now submit post
 
     onClickSubmit({
-        photoID : e.data.photo.id
+        photoID: e.data.photo.id
     });
 }
 
@@ -368,8 +414,16 @@ function onClickSubmit(e) {
     $.text.blur();
     if (blob !== null) {
         require("/api").createAPI({
-            type : "POST", timeout : 20000, isBinary : true, token : true, filename : blob.file.name, url : "/photos?photo[pending]=true&photo[aspect_ids][0]=" + Ti.App.Properties.getString("aspectID") + "&set_profile_image=&qqfile=" + blob.file.name, success : onSubmitPhoto, error : onSubmitPhotoError, parameter : {
-                data : blob
+            type: "POST",
+            timeout: 20000,
+            isBinary: true,
+            token: true,
+            filename: blob.file.name,
+            url: "/photos?photo[pending]=true&photo[aspect_ids][0]=" + Ti.App.Properties.getString("aspectID") + "&set_profile_image=&qqfile=" + blob.file.name,
+            success: onSubmitPhoto,
+            error: onSubmitPhotoError,
+            parameter: {
+                data: blob
             }
         });
     } else {
@@ -378,21 +432,37 @@ function onClickSubmit(e) {
 
         txt = String($.text.value).replace(match, "\\r\\n");
 
-
         if (e.photoID === null) {
             require("/api").createAPI({
-                type : "POST", postJSON : true, token : true, url : "/status_messages", success : onSubmit, error : onSubmitError, parameter : {
-                    "location_coords" : "", "aspect_ids" : Ti.App.Properties.getString("aspectID"), "status_message" : {
-                        "text" : txt
+                type: "POST",
+                postJSON: true,
+                token: true,
+                url: "/status_messages",
+                success: onSubmit,
+                error: onSubmitError,
+                parameter: {
+                    "location_coords": "",
+                    "aspect_ids": Ti.App.Properties.getString("aspectID"),
+                    "status_message": {
+                        "text": txt
                     }
                 }
             });
         } else {
             require("/api").createAPI({
-                type : "POST", postJSON : true, token : true, url : "/status_messages", success : onSubmit, error : onSubmitError, parameter : {
-                    "location_coords" : "", "aspect_ids" : Ti.App.Properties.getString("aspectID"), "status_message" : {
-                        "text" : txt
-                    }, "photos" : String(e.photoID)
+                type: "POST",
+                postJSON: true,
+                token: true,
+                url: "/status_messages",
+                success: onSubmit,
+                error: onSubmitError,
+                parameter: {
+                    "location_coords": "",
+                    "aspect_ids": Ti.App.Properties.getString("aspectID"),
+                    "status_message": {
+                        "text": txt
+                    },
+                    "photos": String(e.photoID)
                 }
             });
         }
@@ -419,7 +489,8 @@ function onSelectPhoto(e) {
 function onClickPhoto(e) {
     if (blob === null) {
         Ti.Media.openPhotoGallery({
-            success : onSelectPhoto, mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+            success: onSelectPhoto,
+            mediaTypes: [Ti.Media.MEDIA_TYPE_PHOTO]
         });
     } else {
         blob = null;
@@ -444,14 +515,25 @@ function onRefresh(e) {
     Ti.App.Properties.setString("lastNotification", "0");
 }
 
-function showImage(url) {
+function showImage(images) {
     $.view_photo.show();
-    $.img_big.image = url;
+
+    var scroller = $.UI.create("ScrollableView");
+
+    for (var i = 0; i < images.length; ++i) {
+        var img = $.UI.create("ImageView", {
+            image: images[i].sizes.large,
+            touchEnabled: false
+        });
+        scroller.addView(img);
+
+    }
+    $.scroller_images.add(scroller);
 }
 
-function onClickImage(e) {
+function onClickSliderClose(e) {
+    $.scroller_images.removeAllChildren();
     $.view_photo.hide();
-    $.img_big.url = null;
 }
 
 function onUserinfo(e) {
@@ -468,7 +550,10 @@ function onUserinfo(e) {
     $.view_aspects.removeAllChildren();
 
     var btn = Ti.UI.createButton({
-        title : "public", id : "public", width : 200, top : 5
+        title: "public",
+        id: "public",
+        width: 200,
+        top: 5
     });
     btn.addEventListener("click", onClickOptionAspects);
     $.view_aspects.add(btn);
@@ -476,7 +561,10 @@ function onUserinfo(e) {
     for (var i = 0; i < aspects.length; ++i) {
 
         btn = Ti.UI.createButton({
-            title : aspects[i].name, id : aspects[i].id, width : 200, bottom : 5
+            title: aspects[i].name,
+            id: aspects[i].id,
+            width: 200,
+            bottom: 5
         });
         btn.addEventListener("click", onClickOptionAspects);
         $.view_aspects.add(btn);
@@ -492,7 +580,11 @@ function getUserInfo() {
     //
     Ti.API.info("get user info");
     require("/api").createAPI({
-        type : "GET", url : "/bookmarklet", success : onUserinfo, error : onUserinfoError, noJSON : true
+        type: "GET",
+        url: "/bookmarklet",
+        success: onUserinfo,
+        error: onUserinfoError,
+        noJSON: true
     });
 }
 
@@ -511,13 +603,16 @@ function onInvite(e) {
     sendMail();
 }
 
-function onInviteError(e) {
-}
+function onInviteError(e) {}
 
 function onClickInvite(e) {
     if (Ti.App.Properties.getString("invitelink") === "") {
         require("/api").createAPI({
-            type : "GET", url : "/users/invitations", success : onInvite, error : onInviteError, noJSON : true
+            type: "GET",
+            url: "/users/invitations",
+            success: onInvite,
+            error: onInviteError,
+            noJSON: true
         });
     } else {
         // send mail
@@ -539,12 +634,10 @@ function onTouchEnd(e) {
     e.source.color = "#bbb";
 }
 
-function onStreamRefresh(e){
+function onStreamRefresh(e) {
     // get more items
     data = [];
     newPosts = 0;
-
-
 
     var lid = Ti.App.Properties.getString("lastPost");
 
@@ -553,27 +646,28 @@ function onStreamRefresh(e){
         var txt = String(e[i].text).replace(/<(?:.|\n)*?>/gm, '');
         var myFav = false;
         var favID = 0;
-        var photo = "";
-        var photoBig = "";
 
         if (e[i].interactions.likes.length > 0) {
             myFav = true;
             favID = e[i].interactions.likes[0].id;
         }
 
-        if (e[i].photos.length > 0) {
-            photo = e[i].photos[0].sizes.small;
-            photoBig = e[i].photos[0].sizes.large;
-        }
-
         data.push({
-            photo : photo, photoBig : photoBig, date : Alloy.Globals.formatDate(e[i].created_at), myFav : myFav, favID : favID, isPublic : e[i]["public"], author : e[i].author.name, comment_count : String(e[i].interactions.comments_count), text : txt, icon : e[i].author.avatar.small, id : e[i].id, like_count : String(e[i].interactions.likes_count)
+            photos: e[i].photos,
+            date: Alloy.Globals.formatDate(e[i].created_at),
+            myFav: myFav,
+            favID: favID,
+            isPublic: e[i]["public"],
+            author: e[i].author.name,
+            comment_count: String(e[i].interactions.comments_count),
+            text: txt,
+            icon: e[i].author.avatar.small,
+            id: e[i].id,
+            like_count: String(e[i].interactions.likes_count)
         });
         txt = null;
         myFav = null;
         favID = null;
-        photo = null;
-        photoBig = null;
 
         if (lastID < e[i].id) {
             newPosts++;
@@ -583,34 +677,37 @@ function onStreamRefresh(e){
 
         var d = new Date(e[i].created_at);
 
-
-        if (d.getTime()/1000 < Ti.App.Properties.getString("lastDate")) {
-            Ti.App.Properties.setString("lastDate", d.getTime()/1000);
+        if (d.getTime() / 1000 < Ti.App.Properties.getString("lastDate")) {
+            Ti.App.Properties.setString("lastDate", d.getTime() / 1000);
         }
-        d=null;
+        d = null;
     }
 
     if (newPosts > 0) {
         showNotification(newPosts);
-        newPostss = 0;
+        newPosts = 0;
     }
     lastID = lid;
     Ti.App.Properties.setString("lastPost", lastID);
     lid = null;
-    if (data.length>0){
+    if (data.length > 0) {
         content.appendData(data);
     }
 
     $.waiting.hide();
 }
 
-function getMore(e){
+function getMore(e) {
     // load more items
     $.waiting.message = " " + L("getStream");
     $.waiting.show();
 
     require("/api").createAPI({
-        type : "GET", url : "/" + Ti.App.Properties.getString("stream")+"?max_time="+Ti.App.Properties.getString("lastDate"), success : onStreamRefresh, token : true, error : onStreamError
+        type: "GET",
+        url: "/" + Ti.App.Properties.getString("stream") + "?max_time=" + Ti.App.Properties.getString("lastDate"),
+        success: onStreamRefresh,
+        token: true,
+        error: onStreamError
     });
 }
 
@@ -628,8 +725,7 @@ $.btn_submit.addEventListener("click", onClickSubmit);
 $.btn_photo.addEventListener("click", onClickPhoto);
 $.btn_write.addEventListener("click", onClickWrite);
 $.btn_refresh.addEventListener("click", onRefresh);
-$.img_big.addEventListener("click", onClickImage);
-$.btn_close.addEventListener("click", onClickImage);
+$.btn_close.addEventListener("click", onClickSliderClose);
 $.lbl_invite.addEventListener("click", onClickInvite);
 $.btn_settings.addEventListener("click", onClickSettings);
 

@@ -34,7 +34,7 @@
                 <Label id="lbl_option3" optionID="2" class="lbl_button" textid="txt_mentions"></Label>
                 <Label id="lbl_option4" optionID="3" class="lbl_button" textid="txt_followedtags"></Label>
                 <Label id="btn_settings" class="lbl_button" textid="txt_settings"></Label>
-                
+
 
             </ScrollView>
             <Label id="lbl_invite" class="lbl_button" textid="txt_invite"></Label>
@@ -43,7 +43,7 @@
         <View id="view_photo">
             <View id="view_bg"></View>
             <Label>loading</Label>
-            <ImageView id="img_big"></ImageView>
+            <View id="scroller_images"></View>
             <Button id="btn_close">x</Button>
         </View>
     </Window>

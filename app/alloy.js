@@ -72,8 +72,9 @@ Alloy.Globals.replaceText = function(txt) {
 
 
     //replace hashtags
+    /*
     match = /#([\u00C0-\u1FFF\u2C00-\uD7FF\w&]+)/ig;
-    txt = txt.replace(match, "<a href='pusteblume:$1'>#$1</a>");
+    txt = txt.replace(match, "<a href='$1'>#$1</a>");*/
 
     //replace headline tags
     match = /(#+ )/ig;
