@@ -5,6 +5,7 @@ var getStream = args.getStream;
 var showImage = args.showImage || null;
 var getMore = args.getMore || null;
 var showImages = Ti.App.Properties.getBool("showImages");
+var isComments = args.comments || false;
 
 function onClickLink(e) {
     //Ti.API.info(e.url);
@@ -47,10 +48,9 @@ $.setData = function(d) {
             top: 0
         });
 
-
         var img = $.UI.create('ImageView', {
             classes: ["img_author"],
-            image: (showImages)?data[i].icon:"",
+            image: (showImages) ? data[i].icon : "",
             author: data[i].author,
             name: "userimage"
         });
@@ -139,7 +139,7 @@ $.setData = function(d) {
         top.add(lbl_date);
         top.add(lbl_text);
 
-        if (data[i].type != "comments") {
+        if (!isComments) {
 
             var img_likes = Ti.UI.createLabel({
                 text: "",
@@ -198,12 +198,12 @@ $.setData = function(d) {
             top.add(img_likes);
             top.add(lbl_likes);
             top.add(spacer);
+        }
 
-            row.add(top);
+        row.add(top);
 
-            if (imageRow) {
-                row.add(imageRow);
-            }
+        if (imageRow) {
+            row.add(imageRow);
         }
 
         row.id = i;
@@ -281,9 +281,11 @@ function onClickItem(e) {
 }
 
 function onScroll(e) {
-    if (e.firstVisibleItem > e.totalItemCount - 10) {
+    if (!isComments) {
+        if (e.firstVisibleItem > e.totalItemCount - 10) {
 
-        $.btn_more.show();
+            $.btn_more.show();
+        }
     }
 }
 

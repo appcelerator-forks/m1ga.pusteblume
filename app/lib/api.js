@@ -19,14 +19,14 @@ function API(opt) {
     var para = parameter;
     var timeout = (opt.timeout) || 8000;
     var xhr = Ti.Network.createHTTPClient({
-        onreadystatechange : function(e) {
+        onreadystatechange: function(e) {
             // log output
             try {
                 //Ti.API.info(JSON.stringify(e));
-            } catch(e) {
-            }
+            } catch (e) {}
 
-        }, onerror : function(e) {
+        },
+        onerror: function(e) {
             // error message
             try {
                 var obj = JSON.parse(this.responseText);
@@ -35,7 +35,7 @@ function API(opt) {
                 } else {
                     alert("error");
                 }
-            } catch(e) {
+            } catch (e) {
 
             }
 
@@ -43,15 +43,15 @@ function API(opt) {
             if (error)
                 error(this.responseText);
 
-        }, onload : function(e) {
+        },
+        onload: function(e) {
             // webpage loaded
             //
             if (this.readyState === 4) {
                 // download done
                 try {
-                     //Ti.API.info(JSON.stringify(e));
-                } catch(e) {
-                }
+                    //Ti.API.info(JSON.stringify(e));
+                } catch (e) {}
                 if (this.getResponseHeader("Set-Cookie") != "") {
                     Ti.App.Properties.setString("cookie_session", this.getResponseHeader("Set-Cookie"));
                 } else {
@@ -67,7 +67,8 @@ function API(opt) {
                 if (success)
                     success(data);
             }
-        }, timeout : timeout
+        },
+        timeout: timeout
     });
 
     xhr.autoEncodeUrl = false;

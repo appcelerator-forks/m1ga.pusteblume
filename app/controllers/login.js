@@ -7,7 +7,11 @@ function getToken() {
     // get token
     //
     require("/api").createAPI({
-        type : "GET", url : "/users/sign_in", success : onToken, error : onTokenError, noJSON : true
+        type: "GET",
+        url: "/users/sign_in",
+        success: onToken,
+        error: onTokenError,
+        noJSON: true
     });
 }
 
@@ -20,8 +24,19 @@ function onToken(e) {
 
     $.waiting.message = L("login");
     require("/api").createAPI({
-        type : "POST", url : "/users/sign_in", success : onLogin, error : onLoginError, login : true, noJSON : true, parameter : {
-            "utf8" : "✓", "user[username]" : $.username.value.split("@")[0], "user[password]" : $.password.value, "commit" : "Sign in", "user[remember_me]" : 1, "authenticity_token" : Ti.App.Properties.getString("token")
+        type: "POST",
+        url: "/users/sign_in",
+        success: onLogin,
+        error: onLoginError,
+        login: true,
+        noJSON: true,
+        parameter: {
+            "utf8": "✓",
+            "user[username]": $.username.value.split("@")[0],
+            "user[password]": $.password.value,
+            "commit": "Sign in",
+            "user[remember_me]": 1,
+            "authenticity_token": Ti.App.Properties.getString("token")
         }
     });
 }
@@ -75,7 +90,7 @@ function onLoginError(e) {
 
 function onClickRegister(e) {
     var win = Alloy.createController("register", {
-        username : $.username
+        username: $.username
     }).getView();
     win.open();
 }
