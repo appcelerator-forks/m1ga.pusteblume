@@ -3,6 +3,7 @@
 Tested and compiled with Appcelerator Titanium SDK 3.5.0 GA and Android 5
 
 If you prefere a native wrapper have a look at https://github.com/martinchodev/Diaspora-Native-WebApp
+
 ---
 
 **At the moment there is no f-droid repo yet.**
@@ -11,11 +12,9 @@ But the binary is available at github: https://github.com/m1ga/pusteblume/releas
 
 ---
 
-Google Playstore: https://play.google.com/store/apps/details?id=com.miga.pusteblume
-
-Pusteblume on github: https://github.com/m1ga/pusteblume
-
-Appcelerator Titanium: http://www.appcelerator.com/platform/titanium-platform/
+* Google Playstore: https://play.google.com/store/apps/details?id=com.miga.pusteblume
+* Pusteblume on github: https://github.com/m1ga/pusteblume
+* Appcelerator Titanium: http://www.appcelerator.com/
 
 ---
 
