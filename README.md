@@ -2,6 +2,7 @@
 
 Tested and compiled with Appcelerator Titanium SDK 3.5.0 GA and Android 5
 
+If you prefere a native wrapper have a look at https://github.com/martinchodev/Diaspora-Native-WebApp
 ---
 
 **At the moment there is no f-droid repo yet.**
