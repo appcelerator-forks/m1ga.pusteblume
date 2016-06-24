@@ -2,7 +2,11 @@
 
 Tested and compiled with Appcelerator Titanium SDK 3.5.0 GA and Android 5
 
-If you prefere a native wrapper have a look at https://github.com/martinchodev/Diaspora-Native-WebApp
+If you prefer a native html wrapper app have a look at https://github.com/Diaspora-for-Android/diaspora-android
+
+---
+
+This is not a webview/html app. It will take the json output and display it in native UI elements. Since there is no API it may not work in future Diaspora versions.
 
 ---
 
